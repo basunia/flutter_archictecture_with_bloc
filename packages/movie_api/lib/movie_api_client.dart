@@ -25,7 +25,7 @@ class MovieApiClent {
 
   final Dio _apiClient;
 
-  Future<List<Movie>> getMovies(int page) async {
+  Future<List<Movie>> getMovies({int page = 1}) async {
     try {
       final response = await _apiClient.get('',
           queryParameters: {'apikey': apiKey, 's': searchTitle, 'page': page});

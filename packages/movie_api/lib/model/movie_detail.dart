@@ -1,20 +1,50 @@
-import 'package:flutter/foundation.dart';
+import 'package:floor/floor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'movie_detail.freezed.dart';
+// part 'movie_detail.freezed.dart';
 part 'movie_detail.g.dart';
 
-@freezed
-class MovieDetail with _$MovieDetail {
-  const factory MovieDetail(
-      {@JsonKey(name: 'Title') required String title,
-      @JsonKey(name: 'Year') required String year,
-      @JsonKey(name: 'Released') required String released,
-      @JsonKey(name: 'Genre') required String genre,
-      @JsonKey(name: 'Plot') required String plot,
-      @JsonKey(name: 'Director') required String director,
-      required String imdbRating}) = _MovieDetail;
+// @freezed
+@JsonSerializable()
+@entity
+class MovieDetail {
+  MovieDetail(
+      {this.id,
+      required this.imdbId,
+      required this.title,
+      required this.year,
+      required this.released,
+      required this.genre,
+      required this.plot,
+      required this.director,
+      required this.imdbRating});
+
+  @PrimaryKey(autoGenerate: true)
+  @JsonKey(ignore: true)
+  int? id;
+  @JsonKey(name: 'imdbID')
+  String imdbId;
+  @JsonKey(name: 'Title')
+  String title;
+  @JsonKey(name: 'Year')
+  String year;
+  @JsonKey(name: 'Released')
+  String released;
+  @JsonKey(name: 'Genre')
+  String genre;
+  @JsonKey(name: 'Plot')
+  String plot;
+  @JsonKey(name: 'Director')
+  String director;
+  String imdbRating;
 
   factory MovieDetail.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MovieDetailToJson(this);
+
+  @override
+  String toString() {
+    return 'id $id, movieId $imdbId, Tittle $title, Genre $genre, Plot $plot, Director $director';
+  }
 }

@@ -5,8 +5,8 @@ const String baseUrl = "http://www.omdbapi.com/";
 
 final option = BaseOptions(
     baseUrl: baseUrl,
-    connectTimeout: 3 * 1000,
-    receiveTimeout: 3 * 1000,
+    connectTimeout: 5 * 1000,
+    receiveTimeout: 5 * 1000,
     headers: {"content-type": "application/json; charset=utf-8"});
 
 Dio? _dio;

@@ -31,8 +31,11 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
+  movie_repository:
+    path: packages/movie_repository
   movie_api:
     path: packages/movie_api
+  equatable: ^2.0.0
     
 
 

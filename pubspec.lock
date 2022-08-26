@@ -64,6 +64,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -176,6 +183,13 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/movie_api"
+      relative: true
+    source: path
+    version: "0.0.1"
+  movie_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/movie_repository"
       relative: true
     source: path
     version: "0.0.1"

@@ -13,7 +13,7 @@ class MovieRepository {
   final MovieApiClent _movieApiClent;
   final MovieDao _localStorageMovieClient;
 
-  void fetchMovieFromApi(int page) async {
+  Future<void> fetchMovieFromApi({int page = 1}) async {
     final movies = await _movieApiClent.getMovies(page: page);
     await _localStorageMovieClient.insertMovies(movies);
   }

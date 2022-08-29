@@ -7,3 +7,5 @@ abstract class MoviesEvent extends Equatable {
 }
 
 class MovieListFetched extends MoviesEvent {}
+
+class MovieListLoadedFromDb extends MoviesEvent {}

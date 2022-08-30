@@ -67,13 +67,33 @@ class _MovieListViewState extends State<MovieListView> {
                         // ? ButtonLoadMore(loadMore: () {
                         //     context.read<MoviesBloc>().add(MovieListFetched());
                         //   })
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (i % 10 == 0) const Text('------------------'),
-                              MovieListItem(movie: state.movies[i]),
-                            ],
+                        : Card(
+                            elevation: 2.0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Center(
+                                      child: Container(
+                                    // decoration: BoxDecoration(
+                                    //   borderRadius: BorderRadius.all(2)
+                                    // ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image(
+                                        image: NetworkImage(
+                                            state.movies[i].poster),
+                                      ),
+                                    ),
+                                  )),
+                                ),
+                                if (i % 10 == 0)
+                                  const Text('------------------'),
+                                MovieListItem(movie: state.movies[i]),
+                              ],
+                            ),
                           );
                     // return Padding(
                     //   padding: const EdgeInsets.all(4.0),

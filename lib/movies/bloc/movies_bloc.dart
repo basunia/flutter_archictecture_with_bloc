@@ -24,7 +24,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
         super(const MoviesBlocState()) {
     on<MovieListFetched>(
       _fetchMovies,
-      transformer: throttleDroppable(throttleDuration),
+      // transformer: throttleDroppable(throttleDuration),
     );
     // on<MovieListLoadedFromDb>(_fetchMovies);
   }

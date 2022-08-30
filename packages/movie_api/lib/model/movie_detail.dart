@@ -11,6 +11,7 @@ class MovieDetail {
   MovieDetail(
       {this.id,
       required this.imdbId,
+      required this.poster,
       required this.title,
       required this.year,
       required this.released,
@@ -24,6 +25,8 @@ class MovieDetail {
   int? id;
   @JsonKey(name: 'imdbID')
   String imdbId;
+  @JsonKey(name: 'Poster')
+  String poster;
   @JsonKey(name: 'Title')
   String title;
   @JsonKey(name: 'Year')

@@ -84,7 +84,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Movie` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `year` TEXT NOT NULL, `imdbId` TEXT NOT NULL, `poster` TEXT NOT NULL)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `MovieDetail` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imdbId` TEXT NOT NULL, `title` TEXT NOT NULL, `year` TEXT NOT NULL, `released` TEXT NOT NULL, `genre` TEXT NOT NULL, `plot` TEXT NOT NULL, `director` TEXT NOT NULL, `imdbRating` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `MovieDetail` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `imdbId` TEXT NOT NULL, `poster` TEXT NOT NULL, `title` TEXT NOT NULL, `year` TEXT NOT NULL, `released` TEXT NOT NULL, `genre` TEXT NOT NULL, `plot` TEXT NOT NULL, `director` TEXT NOT NULL, `imdbRating` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -107,6 +107,7 @@ class _$MovieDao extends MovieDao {
             (MovieDetail item) => <String, Object?>{
                   'id': item.id,
                   'imdbId': item.imdbId,
+                  'poster': item.poster,
                   'title': item.title,
                   'year': item.year,
                   'released': item.released,
@@ -145,6 +146,7 @@ class _$MovieDao extends MovieDao {
         mapper: (Map<String, Object?> row) => MovieDetail(
             id: row['id'] as int?,
             imdbId: row['imdbId'] as String,
+            poster: row['poster'] as String,
             title: row['title'] as String,
             year: row['year'] as String,
             released: row['released'] as String,

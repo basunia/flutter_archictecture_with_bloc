@@ -3,6 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:movie_buzz/movie_details/view/movie_detail_page.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/button_load_more.dart';
@@ -38,8 +39,6 @@ class MovieListView extends StatefulWidget {
 
 class _MovieListViewState extends State<MovieListView> {
   final _scrollController = ScrollController();
-  var subscription;
-  var isDeviceConnected = false;
   @override
   void initState() {
     super.initState();
@@ -48,12 +47,13 @@ class _MovieListViewState extends State<MovieListView> {
   }
 
   _fetchMovieList() async {
-    if (await isInternetAvailable()) {
+    if (await isInternetAvailable) {
       context.read<MoviesBloc>().add(MovieListFetched());
     } else {
       showTopSnackBar(
         context,
         const CustomSnackBar.error(
+          textStyle: TextStyle(fontSize: 20.0),
           message: 'Sorry no Internet!. Please check your connnection',
         ),
       );
@@ -89,35 +89,40 @@ class _MovieListViewState extends State<MovieListView> {
                         // ? ButtonLoadMore(loadMore: () {
                         //     context.read<MoviesBloc>().add(MovieListFetched());
                         //   })
-                        : Card(
-                            elevation: 2.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Center(
-                                      child: Container(
-                                    // decoration: BoxDecoration(
-                                    //   borderRadius: BorderRadius.all(2)
-                                    // ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: CachedNetworkImage(
-                                        imageUrl: state.movies[i].poster,
-                                        placeholder: (context, url) =>
-                                            const CircularProgressIndicator(),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
+                        : GestureDetector(
+                            onTap: () => Navigator.push(context,
+                                MovieDetailPage.route(movie: state.movies[i])),
+                            child: Card(
+                              elevation: 2.0,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Center(
+                                        child: Container(
+                                      // decoration: BoxDecoration(
+                                      //   borderRadius: BorderRadius.all(2)
+                                      // ),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: CachedNetworkImage(
+                                          imageUrl: state.movies[i].poster,
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                        ),
                                       ),
-                                    ),
-                                  )),
-                                ),
-                                if (i % 10 == 0)
-                                  const Text('------------------'),
-                                MovieListItem(movie: state.movies[i]),
-                              ],
+                                    )),
+                                  ),
+                                  if (i % 10 == 0)
+                                    const Text('------------------'),
+                                  MovieListItem(movie: state.movies[i]),
+                                ],
+                              ),
                             ),
                           );
                     // return Padding(

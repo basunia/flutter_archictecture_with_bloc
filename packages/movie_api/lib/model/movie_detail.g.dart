@@ -8,6 +8,7 @@ part of 'movie_detail.dart';
 
 MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
       imdbId: json['imdbID'] as String,
+      poster: json['Poster'] as String,
       title: json['Title'] as String,
       year: json['Year'] as String,
       released: json['Released'] as String,
@@ -20,6 +21,7 @@ MovieDetail _$MovieDetailFromJson(Map<String, dynamic> json) => MovieDetail(
 Map<String, dynamic> _$MovieDetailToJson(MovieDetail instance) =>
     <String, dynamic>{
       'imdbID': instance.imdbId,
+      'Poster': instance.poster,
       'Title': instance.title,
       'Year': instance.year,
       'Released': instance.released,

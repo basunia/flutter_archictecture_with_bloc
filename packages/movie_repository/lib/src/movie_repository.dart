@@ -18,7 +18,7 @@ class MovieRepository {
     await _localStorageMovieClient.insertMovies(movies);
   }
 
-  void fetchMovieDetailFromApi(String movieId) async {
+  Future<void> fetchMovieDetailFromApi(String movieId) async {
     final movie = await _movieApiClent.getMovieDetail(movieId);
     await _localStorageMovieClient.insertMovieDetail(movie);
   }

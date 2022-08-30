@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
+import 'package:movie_buzz/movies/widgets/button_load_more.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_item.dart';
@@ -63,6 +64,9 @@ class _MovieListViewState extends State<MovieListView> {
                   itemBuilder: (context, i) {
                     return i >= state.movies.length
                         ? const BottomLoader()
+                        // ? ButtonLoadMore(loadMore: () {
+                        //     context.read<MoviesBloc>().add(MovieListFetched());
+                        //   })
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,9 +105,19 @@ class _MovieListViewState extends State<MovieListView> {
   }
 
   void _onScroll() {
-    if (_isBottom) {
-      context.read<MoviesBloc>().add(MovieListFetched());
+    if (_scrollController.position.atEdge) {
+      bool isTop = _scrollController.position.pixels == 0;
+      if (isTop) {
+        print('At the top');
+      } else {
+        print('At the bottom');
+        context.read<MoviesBloc>().add(MovieListFetched());
+      }
     }
+
+    // if (_isBottom) {
+    //   context.read<MoviesBloc>().add(MovieListFetched());
+    // }
   }
 
   bool get _isBottom {

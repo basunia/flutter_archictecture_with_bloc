@@ -24,7 +24,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
         super(const MoviesBlocState()) {
     on<MovieListFetched>(
       _fetchMovies,
-      // transformer: throttleDroppable(throttleDuration),
+      transformer: throttleDroppable(throttleDuration),
     );
     // on<MovieListLoadedFromDb>(_fetchMovies);
   }
@@ -38,12 +38,17 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
               ? MovieStatus.initial
               : MovieStatus.loading));
       final page = state.pageNumber + 1;
+      print('Page:=======> $page');
       await _movieRepository.fetchMovieFromApi(page: page);
-      final movieStream = _movieRepository.loadMovieFromDb();
-      await emit.forEach(movieStream,
-          onData: (List<Movie> movies) => state.copyWith(
-              status: MovieStatus.success, movies: movies, pageNumber: page),
-          onError: (ob, st) => state.copyWith(status: MovieStatus.failure));
+      if (state.status == MovieStatus.initial) {
+        // final movieStream = _movieRepository.loadMovieFromDb();
+        await emit.forEach(_movieRepository.loadMovieFromDb(),
+            onData: (List<Movie> movies) => state.copyWith(
+                status: MovieStatus.success,
+                movies: movies,
+                pageNumber: state.pageNumber + 1),
+            onError: (ob, st) => state.copyWith(status: MovieStatus.failure));
+      }
     } catch (e) {
       emit(state.copyWith(status: MovieStatus.failure));
     }

@@ -36,6 +36,8 @@ dependencies:
   movie_api:
     path: packages/movie_api
   equatable: ^2.0.0
+  bloc_concurrency: ^0.2.0
+  stream_transform: ^2.0.0
     
 
 

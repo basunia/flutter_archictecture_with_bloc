@@ -18,6 +18,7 @@ class MovieListItem extends StatelessWidget {
         // style: textTheme.bodyMedium,
       ),
       trailing: Text(movie.imdbId),
+      dense: true,
     ));
   }
 }

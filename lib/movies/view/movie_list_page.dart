@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
+import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_item.dart';
@@ -21,8 +22,20 @@ class MovieListPage extends StatelessWidget {
   }
 }
 
-class MovieListView extends StatelessWidget {
+class MovieListView extends StatefulWidget {
   const MovieListView({Key? key}) : super(key: key);
+
+  @override
+  State<MovieListView> createState() => _MovieListViewState();
+}
+
+class _MovieListViewState extends State<MovieListView> {
+  final _scrollController = ScrollController();
+  @override
+  void initState() {
+    _scrollController.addListener(_onScroll);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +48,29 @@ class MovieListView extends StatelessWidget {
           switch (state.status) {
             case MovieStatus.failure:
               return const MovieListError();
+            case MovieStatus.initial:
+              return const MovieListLoading();
             case MovieStatus.success:
+            default:
               if (state.movies.isEmpty) {
                 return const MovieListEmpty();
               }
               return ListView.builder(
-                  itemCount: state.movies.length,
+                  itemCount: state.hasReachedMax
+                      ? state.movies.length
+                      : state.movies.length + 1,
+                  controller: _scrollController,
                   itemBuilder: (context, i) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (i % 10 == 0) const Text('------------------'),
-                        MovieListItem(movie: state.movies[i]),
-                      ],
-                    );
+                    return i >= state.movies.length
+                        ? const BottomLoader()
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (i % 10 == 0) const Text('------------------'),
+                              MovieListItem(movie: state.movies[i]),
+                            ],
+                          );
                     // return Padding(
                     //   padding: const EdgeInsets.all(4.0),
                     //   child: Column(
@@ -65,12 +86,30 @@ class MovieListView extends StatelessWidget {
                     //   ),
                     // );
                   });
-            case MovieStatus.loading:
-            default:
-              return const MovieListLoading();
           }
         }),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      context.read<MoviesBloc>().add(MovieListFetched());
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }

@@ -1,31 +1,48 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:movie_api/model/movie.dart';
 import 'package:movie_repository/movie_repository.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 part 'movies_bloc_event.dart';
 part 'movies_bloc_state.dart';
 
 const movieLimit = 10;
+const throttleDuration = Duration(milliseconds: 100);
+
+EventTransformer<E> throttleDroppable<E>(Duration duration) {
+  return (events, mapper) {
+    return droppable<E>().call(events.throttle(duration), mapper);
+  };
+}
 
 class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
   MoviesBloc({required MovieRepository movieRepository})
       : _movieRepository = movieRepository,
         super(const MoviesBlocState()) {
-    on<MovieListFetched>(_fetchMovies);
+    on<MovieListFetched>(
+      _fetchMovies,
+      // transformer: throttleDroppable(throttleDuration),
+    );
     // on<MovieListLoadedFromDb>(_fetchMovies);
   }
   final MovieRepository _movieRepository;
 
   _fetchMovies(MovieListFetched event, Emitter<MoviesBlocState> emit) async {
-    emit(state.copyWith(status: MovieStatus.initial));
+    if (state.hasReachedMax) return;
     try {
-      await _movieRepository.fetchMovieFromApi();
+      emit(state.copyWith(
+          status: state.movies.isEmpty
+              ? MovieStatus.initial
+              : MovieStatus.loading));
+      final page = state.pageNumber + 1;
+      await _movieRepository.fetchMovieFromApi(page: page);
       final movieStream = _movieRepository.loadMovieFromDb();
-      emit.forEach(movieStream,
-          onData: (List<Movie> movies) =>
-              state.copyWith(status: MovieStatus.success, movies: movies),
+      await emit.forEach(movieStream,
+          onData: (List<Movie> movies) => state.copyWith(
+              status: MovieStatus.success, movies: movies, pageNumber: page),
           onError: (ob, st) => state.copyWith(status: MovieStatus.failure));
     } catch (e) {
       emit(state.copyWith(status: MovieStatus.failure));

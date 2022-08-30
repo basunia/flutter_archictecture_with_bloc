@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/button_load_more.dart';
@@ -7,7 +10,10 @@ import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_item.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
+import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_repository/movie_repository.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class MovieListPage extends StatelessWidget {
   const MovieListPage({Key? key}) : super(key: key);
@@ -17,7 +23,7 @@ class MovieListPage extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           MoviesBloc(movieRepository: context.read<MovieRepository>())
-            ..add(MovieListFetched()),
+            ..add(MovieListSubscriptionRequested()),
       child: const MovieListView(),
     );
   }
@@ -32,10 +38,26 @@ class MovieListView extends StatefulWidget {
 
 class _MovieListViewState extends State<MovieListView> {
   final _scrollController = ScrollController();
+  var subscription;
+  var isDeviceConnected = false;
   @override
   void initState() {
-    _scrollController.addListener(_onScroll);
     super.initState();
+    _fetchMovieList();
+    _scrollController.addListener(_onScroll);
+  }
+
+  _fetchMovieList() async {
+    if (await isInternetAvailable()) {
+      context.read<MoviesBloc>().add(MovieListFetched());
+    } else {
+      showTopSnackBar(
+        context,
+        const CustomSnackBar.error(
+          message: 'Sorry no Internet!. Please check your connnection',
+        ),
+      );
+    }
   }
 
   @override
@@ -82,9 +104,12 @@ class _MovieListViewState extends State<MovieListView> {
                                     // ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
-                                      child: Image(
-                                        image: NetworkImage(
-                                            state.movies[i].poster),
+                                      child: CachedNetworkImage(
+                                        imageUrl: state.movies[i].poster,
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
                                       ),
                                     ),
                                   )),
@@ -131,7 +156,7 @@ class _MovieListViewState extends State<MovieListView> {
         print('At the top');
       } else {
         print('At the bottom');
-        context.read<MoviesBloc>().add(MovieListFetched());
+        _fetchMovieList();
       }
     }
 

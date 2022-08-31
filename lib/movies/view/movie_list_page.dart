@@ -42,13 +42,15 @@ class _MovieListViewState extends State<MovieListView> {
   @override
   void initState() {
     super.initState();
-    _fetchMovieList();
+    _fetchMovieList(isOnStartUp: true);
     _scrollController.addListener(_onScroll);
   }
 
-  _fetchMovieList() async {
+  _fetchMovieList({bool isOnStartUp = false}) async {
     if (await isInternetAvailable) {
-      context.read<MoviesBloc>().add(MovieListFetched());
+      context
+          .read<MoviesBloc>()
+          .add(MovieListFetched(isOnStartUp: isOnStartUp));
     } else {
       showTopSnackBar(
         context,

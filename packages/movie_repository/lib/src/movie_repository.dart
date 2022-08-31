@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:movie_api/data/movie_dao.dart';
 import 'package:movie_api/model/movie.dart';
 import 'package:movie_api/model/movie_detail.dart';
@@ -23,9 +25,15 @@ class MovieRepository {
     await _localStorageMovieClient.insertMovieDetail(movie);
   }
 
-  Stream<List<Movie>> loadMovieFromDb() =>
+  Stream<List<Movie>> loadMovieFromDbAsStream() =>
       _localStorageMovieClient.findAllMoviesAsStream();
 
-  Stream<MovieDetail?> loadMovieDetailFromDb(String movieId) =>
+  Future<int?> countMovieList() =>
+      _localStorageMovieClient.countMovieListItem();
+
+  Stream<MovieDetail?> loadMovieDetailFromDbAsStream(String movieId) =>
+      _localStorageMovieClient.findMovieDetailByIdAsStream(movieId);
+
+  Future<MovieDetail?> loadMovieDetailFromDb(String movieId) =>
       _localStorageMovieClient.findMovieDetailById(movieId);
 }

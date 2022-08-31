@@ -18,8 +18,13 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
 
   _onMovieDetailFetched(
       MovieDetailFetched event, Emitter<MovieDetailState> emit) async {
-    emit(state.copyWith(movieDetailStatus: MovieDetailStatus.initial));
     try {
+      // Check whether data availables on db
+      final result =
+          await _movieRepository.loadMovieDetailFromDb(event.movieId);
+      if (result != null) return;
+
+      emit(state.copyWith(movieDetailStatus: MovieDetailStatus.initial));
       await _movieRepository.fetchMovieDetailFromApi(event.movieId);
     } catch (_) {
       emit(state.copyWith(movieDetailStatus: MovieDetailStatus.failure));
@@ -29,7 +34,8 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
   _onMovieDetailSubscriptionRequested(MovieDetailSubscriptionRequested event,
       Emitter<MovieDetailState> emit) async {
     try {
-      await emit.forEach(_movieRepository.loadMovieDetailFromDb(event.movieId),
+      await emit.forEach(
+          _movieRepository.loadMovieDetailFromDbAsStream(event.movieId),
           onData: (MovieDetail? movieDetail) => state.copyWith(
               movieDetail: movieDetail,
               movieDetailStatus: MovieDetailStatus.success),

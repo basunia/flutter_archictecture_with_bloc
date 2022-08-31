@@ -6,6 +6,9 @@ abstract class MoviesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class MovieListFetched extends MoviesEvent {}
+class MovieListFetched extends MoviesEvent {
+  MovieListFetched({this.isOnStartUp = false});
+  final bool isOnStartUp;
+}
 
 class MovieListSubscriptionRequested extends MoviesEvent {}

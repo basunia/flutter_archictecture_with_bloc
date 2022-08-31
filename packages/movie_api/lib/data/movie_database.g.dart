@@ -140,7 +140,7 @@ class _$MovieDao extends MovieDao {
   final InsertionAdapter<Movie> _movieInsertionAdapter;
 
   @override
-  Stream<MovieDetail?> findMovieDetailById(String imdbId) {
+  Stream<MovieDetail?> findMovieDetailByIdAsStream(String imdbId) {
     return _queryAdapter.queryStream(
         'SELECT * FROM MovieDetail WHERE imdbId = ?1',
         mapper: (Map<String, Object?> row) => MovieDetail(
@@ -157,6 +157,23 @@ class _$MovieDao extends MovieDao {
         arguments: [imdbId],
         queryableName: 'MovieDetail',
         isView: false);
+  }
+
+  @override
+  Future<MovieDetail?> findMovieDetailById(String imdbId) async {
+    return _queryAdapter.query('SELECT * FROM MovieDetail WHERE imdbId = ?1',
+        mapper: (Map<String, Object?> row) => MovieDetail(
+            id: row['id'] as int?,
+            imdbId: row['imdbId'] as String,
+            poster: row['poster'] as String,
+            title: row['title'] as String,
+            year: row['year'] as String,
+            released: row['released'] as String,
+            genre: row['genre'] as String,
+            plot: row['plot'] as String,
+            director: row['director'] as String,
+            imdbRating: row['imdbRating'] as String),
+        arguments: [imdbId]);
   }
 
   @override

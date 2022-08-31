@@ -12,7 +12,10 @@ abstract class MovieDao {
   Future<void> insertMovieDetail(MovieDetail movieDetail);
 
   @Query('SELECT * FROM MovieDetail WHERE imdbId = :imdbId')
-  Stream<MovieDetail?> findMovieDetailById(String imdbId);
+  Stream<MovieDetail?> findMovieDetailByIdAsStream(String imdbId);
+
+  @Query('SELECT * FROM MovieDetail WHERE imdbId = :imdbId')
+  Future<MovieDetail?> findMovieDetailById(String imdbId);
 
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertMovies(List<Movie> movie);

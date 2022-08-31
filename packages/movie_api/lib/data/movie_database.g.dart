@@ -190,6 +190,11 @@ class _$MovieDao extends MovieDao {
   }
 
   @override
+  Future<int?> countMovieListItem() async {
+    await _queryAdapter.queryNoReturn('SELECT COUNT(*) FROM Movie');
+  }
+
+  @override
   Future<void> insertMovieDetail(MovieDetail movieDetail) async {
     await _movieDetailInsertionAdapter.insert(
         movieDetail, OnConflictStrategy.replace);

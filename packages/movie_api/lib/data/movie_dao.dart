@@ -23,6 +23,10 @@ abstract class MovieDao {
   @Query('SELECT * FROM Movie')
   Stream<List<Movie>> findAllMoviesAsStream();
 
+  // yet not supported by floor, issue: https://github.com/pinchbv/floor/issues/576
+  @Query('SELECT COUNT(*) FROM Movie')
+  Future<int?> countMovieListItem();
+
   // @Query('SELECT * FROM Movie WHERE id = :id')
   // Stream<Movie?> findMovieById(int id);
 }

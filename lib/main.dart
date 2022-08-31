@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_buzz/service_locator.dart';
 import 'package:movie_repository/movie_repository.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+      storageDirectory: await getTemporaryDirectory());
   final services = ServiceLocator();
-  runApp(MovieApp(
-    movieRepository: MovieRepository(
-        movieApiClent: services.movieApiClient,
-        localStorageMovieClient: await services.localStorageClient),
-  ));
+  HydratedBlocOverrides.runZoned(() async {
+    runApp(MovieApp(
+      movieRepository: MovieRepository(
+          movieApiClent: services.movieApiClient,
+          localStorageMovieClient: await services.localStorageClient),
+    ));
+  }, storage: storage);
 }
 
 

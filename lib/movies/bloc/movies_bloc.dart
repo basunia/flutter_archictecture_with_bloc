@@ -1,14 +1,16 @@
-import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_api/model/movie.dart';
 import 'package:movie_buzz/service_locator.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
 
+import 'movies_bloc_state.dart';
+
 part 'movies_bloc_event.dart';
-part 'movies_bloc_state.dart';
+// part 'movies_bloc_state.dart';
 
 const movieLimit = 10;
 const throttleDuration = Duration(milliseconds: 100);
@@ -19,7 +21,7 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
+class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
   MoviesBloc({required MovieRepository movieRepository})
       : _movieRepository = movieRepository,
         super(const MoviesBlocState()) {
@@ -47,7 +49,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
           status: state.movies.isEmpty
               ? MovieStatus.initial
               : MovieStatus.loading));
-      final page = state.pageNumber + 1;
+      final page = state.pageNumber;
       debugPrint('Page:=======> $page');
       await _movieRepository.fetchMovieFromApi(page: page);
     } catch (e) {
@@ -66,4 +68,11 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesBlocState> {
           onError: (ob, st) => state.copyWith(status: MovieStatus.failure));
     }
   }
+
+  @override
+  MoviesBlocState? fromJson(Map<String, dynamic> json) =>
+      MoviesBlocState.fromJson(json);
+
+  @override
+  Map<String, dynamic>? toJson(MoviesBlocState state) => state.toJson();
 }

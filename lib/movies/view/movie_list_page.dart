@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:movie_buzz/movie_details/view/movie_detail_page.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
-import 'package:movie_buzz/movies/widgets/button_load_more.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_item.dart';
@@ -15,6 +12,8 @@ import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+
+import '../bloc/movies_bloc_state.dart';
 
 class MovieListPage extends StatelessWidget {
   const MovieListPage({Key? key}) : super(key: key);

@@ -195,6 +195,16 @@ class _$MovieDao extends MovieDao {
   }
 
   @override
+  Future<void> clearMovies() async {
+    await _queryAdapter.queryNoReturn('DELETE from Movie');
+  }
+
+  @override
+  Future<void> clearMovieDetails() async {
+    await _queryAdapter.queryNoReturn('DELETE from MovieDetail');
+  }
+
+  @override
   Future<void> insertMovieDetail(MovieDetail movieDetail) async {
     await _movieDetailInsertionAdapter.insert(
         movieDetail, OnConflictStrategy.replace);
@@ -203,5 +213,19 @@ class _$MovieDao extends MovieDao {
   @override
   Future<void> insertMovies(List<Movie> movie) async {
     await _movieInsertionAdapter.insertList(movie, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> clearAllData() async {
+    if (database is sqflite.Transaction) {
+      await super.clearAllData();
+    } else {
+      await (database as sqflite.Database)
+          .transaction<void>((transaction) async {
+        final transactionDatabase = _$AppDatabase(changeListener)
+          ..database = transaction;
+        await transactionDatabase.movieDao.clearAllData();
+      });
+    }
   }
 }

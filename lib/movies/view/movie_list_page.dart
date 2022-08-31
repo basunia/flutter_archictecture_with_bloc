@@ -41,15 +41,16 @@ class _MovieListViewState extends State<MovieListView> {
   @override
   void initState() {
     super.initState();
-    _fetchMovieList(isOnStartUp: true);
+    _fetchMovieList(movieFetchType: MovieFetchType.startup);
     _scrollController.addListener(_onScroll);
   }
 
-  _fetchMovieList({bool isOnStartUp = false}) async {
+  _fetchMovieList(
+      {MovieFetchType movieFetchType = MovieFetchType.startup}) async {
     if (await isInternetAvailable) {
       context
           .read<MoviesBloc>()
-          .add(MovieListFetched(isOnStartUp: isOnStartUp));
+          .add(MovieListFetched(movieFetchType: movieFetchType));
     } else {
       showTopSnackBar(
         context,
@@ -67,82 +68,91 @@ class _MovieListViewState extends State<MovieListView> {
       appBar: AppBar(title: const Text('Movie Buzz')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child:
-            BlocBuilder<MoviesBloc, MoviesBlocState>(builder: (context, state) {
-          switch (state.status) {
-            case MovieStatus.failure:
-              return const MovieListError();
-            case MovieStatus.initial:
-              return const MovieListLoading();
-            case MovieStatus.success:
-            default:
-              if (state.movies.isEmpty) {
-                return const MovieListEmpty();
-              }
-              return ListView.builder(
-                  itemCount: state.hasReachedMax
-                      ? state.movies.length
-                      : state.movies.length + 1,
-                  controller: _scrollController,
-                  itemBuilder: (context, i) {
-                    return i >= state.movies.length
-                        ? const BottomLoader()
-                        // ? ButtonLoadMore(loadMore: () {
-                        //     context.read<MoviesBloc>().add(MovieListFetched());
-                        //   })
-                        : GestureDetector(
-                            onTap: () => Navigator.push(context,
-                                MovieDetailPage.route(movie: state.movies[i])),
-                            child: Card(
-                              elevation: 2.0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Center(
-                                        child: Container(
-                                      // decoration: BoxDecoration(
-                                      //   borderRadius: BorderRadius.all(2)
-                                      // ),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: CachedNetworkImage(
-                                          imageUrl: state.movies[i].poster,
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+          },
+          child: BlocBuilder<MoviesBloc, MoviesBlocState>(
+              builder: (context, state) {
+            switch (state.status) {
+              case MovieStatus.failure:
+                return const MovieListError();
+              case MovieStatus.initial:
+                return const MovieListLoading();
+              case MovieStatus.success:
+              default:
+                if (state.movies.isEmpty) {
+                  return const MovieListEmpty();
+                }
+                return ListView.builder(
+                    itemCount: state.hasReachedMax
+                        ? state.movies.length
+                        : state.movies.length + 1,
+                    controller: _scrollController,
+                    itemBuilder: (context, i) {
+                      return i >= state.movies.length
+                          ? const BottomLoader()
+                          // ? ButtonLoadMore(loadMore: () {
+                          //     context.read<MoviesBloc>().add(MovieListFetched());
+                          //   })
+                          : GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MovieDetailPage.route(
+                                      movie: state.movies[i])),
+                              child: Card(
+                                elevation: 2.0,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Center(
+                                          child: Container(
+                                        // decoration: BoxDecoration(
+                                        //   borderRadius: BorderRadius.all(2)
+                                        // ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: CachedNetworkImage(
+                                            imageUrl: state.movies[i].poster,
+                                            placeholder: (context, url) =>
+                                                const CircularProgressIndicator(),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
                                         ),
-                                      ),
-                                    )),
-                                  ),
-                                  if (i % 10 == 0)
-                                    const Text('------------------'),
-                                  MovieListItem(movie: state.movies[i]),
-                                ],
+                                      )),
+                                    ),
+                                    if (i % 10 == 0)
+                                      const Text('------------------'),
+                                    MovieListItem(
+                                        movie: state.movies[i], index: i + 1),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                    // return Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.start,
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       if (i % 10 == 0) const Text('------------'),
-                    //       Text(
-                    //         'id  ${state.movies[i].id} title : ${state.movies[i].title}',
-                    //         style: const TextStyle(fontSize: 18.0),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
-                  });
-          }
-        }),
+                            );
+                      // return Padding(
+                      //   padding: const EdgeInsets.all(4.0),
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       if (i % 10 == 0) const Text('------------'),
+                      //       Text(
+                      //         'id  ${state.movies[i].id} title : ${state.movies[i].title}',
+                      //         style: const TextStyle(fontSize: 18.0),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // );
+                    });
+            }
+          }),
+        ),
       ),
     );
   }
@@ -162,7 +172,7 @@ class _MovieListViewState extends State<MovieListView> {
         print('At the top');
       } else {
         print('At the bottom');
-        _fetchMovieList();
+        _fetchMovieList(movieFetchType: MovieFetchType.pagination);
       }
     }
 

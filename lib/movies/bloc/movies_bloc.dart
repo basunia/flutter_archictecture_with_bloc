@@ -36,9 +36,14 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
   _fetchMovies(MovieListFetched event, Emitter<MoviesBlocState> emit) async {
     if (state.hasReachedMax) return;
     try {
-      // Check whether data availables on db
-      // if not, then fetch from server on startup
-      if (event.isOnStartUp) {
+      if (event.movieFetchType == MovieFetchType.refresh) {
+        await _movieRepository.clearAllData();
+        await clear();
+      }
+
+      /// Check whether data availables on db
+      /// if not, then fetch from server on startup
+      if (event.movieFetchType == MovieFetchType.startup) {
         final appDatabase = await ServiceLocator.appDatabase;
         final result = await appDatabase.movieCount;
         print('Movie count $result');
@@ -46,9 +51,12 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
       }
 
       emit(state.copyWith(
-          status: state.movies.isEmpty
+          status: state.movies.isEmpty ||
+                  event.movieFetchType == MovieFetchType.refresh
               ? MovieStatus.initial
-              : MovieStatus.loading));
+              : MovieStatus.loading,
+          pageNumber:
+              event.movieFetchType == MovieFetchType.refresh ? 1 : null));
       final page = state.pageNumber;
       debugPrint('Page:=======> $page');
       await _movieRepository.fetchMovieFromApi(page: page);

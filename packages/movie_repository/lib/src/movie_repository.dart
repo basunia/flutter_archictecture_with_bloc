@@ -15,6 +15,9 @@ class MovieRepository {
   final MovieApiClent _movieApiClent;
   final MovieDao _localStorageMovieClient;
 
+  Future<void> clearAllData() async =>
+      await _localStorageMovieClient.clearAllData();
+
   Future<void> fetchMovieFromApi({int page = 1}) async {
     final movies = await _movieApiClent.getMovies(page: page);
     await _localStorageMovieClient.insertMovies(movies);

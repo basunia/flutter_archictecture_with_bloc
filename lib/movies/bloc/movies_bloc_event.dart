@@ -6,9 +6,11 @@ abstract class MoviesEvent extends Equatable {
   List<Object> get props => [];
 }
 
+enum MovieFetchType { startup, pagination, refresh }
+
 class MovieListFetched extends MoviesEvent {
-  MovieListFetched({this.isOnStartUp = false});
-  final bool isOnStartUp;
+  MovieListFetched({this.movieFetchType = MovieFetchType.startup});
+  final MovieFetchType movieFetchType;
 }
 
 class MovieListSubscriptionRequested extends MoviesEvent {}

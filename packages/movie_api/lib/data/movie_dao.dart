@@ -29,4 +29,16 @@ abstract class MovieDao {
 
   // @Query('SELECT * FROM Movie WHERE id = :id')
   // Stream<Movie?> findMovieById(int id);
+
+  @transaction
+  Future<void> clearAllData() async {
+    await clearMovies();
+    await clearMovieDetails();
+  }
+
+  @Query('DELETE from Movie')
+  Future<void> clearMovies();
+
+  @Query('DELETE from MovieDetail')
+  Future<void> clearMovieDetails();
 }

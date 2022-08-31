@@ -8,6 +8,13 @@ part 'movies_bloc_state.g.dart';
 
 enum MovieStatus { initial, loading, success, failure }
 
+extension MovieStatusX on MovieStatus {
+  bool get isInitial => this == MovieStatus.initial;
+  bool get isLoading => this == MovieStatus.loading;
+  bool get isSuccess => this == MovieStatus.success;
+  bool get isFailure => this == MovieStatus.failure;
+}
+
 @JsonSerializable()
 class MoviesBlocState extends Equatable {
   const MoviesBlocState(

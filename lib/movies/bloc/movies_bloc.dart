@@ -27,7 +27,7 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
         super(const MoviesBlocState()) {
     on<MovieListFetched>(
       _fetchMovies,
-      // transformer: throttleDroppable(throttleDuration),
+      transformer: throttleDroppable(throttleDuration),
     );
     on<MovieListSubscriptionRequested>(_onSubscriptionRequested);
   }
@@ -36,14 +36,15 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
   _fetchMovies(MovieListFetched event, Emitter<MoviesBlocState> emit) async {
     if (state.hasReachedMax) return;
     try {
-      if (event.movieFetchType == MovieFetchType.refresh) {
+      /// Clear all app data on refresh
+      if (event.movieFetchType.isRefresh) {
         await _movieRepository.clearAllData();
         await clear();
       }
 
       /// Check whether data availables on db
       /// if not, then fetch from server on startup
-      if (event.movieFetchType == MovieFetchType.startup) {
+      if (event.movieFetchType.isStartup) {
         final appDatabase = await ServiceLocator.appDatabase;
         final result = await appDatabase.movieCount;
         print('Movie count $result');
@@ -51,12 +52,10 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
       }
 
       emit(state.copyWith(
-          status: state.movies.isEmpty ||
-                  event.movieFetchType == MovieFetchType.refresh
+          status: state.movies.isEmpty || event.movieFetchType.isRefresh
               ? MovieStatus.initial
               : MovieStatus.loading,
-          pageNumber:
-              event.movieFetchType == MovieFetchType.refresh ? 1 : null));
+          pageNumber: event.movieFetchType.isRefresh ? 1 : null));
       final page = state.pageNumber;
       debugPrint('Page:=======> $page');
       await _movieRepository.fetchMovieFromApi(page: page);
@@ -67,7 +66,7 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
 
   _onSubscriptionRequested(MovieListSubscriptionRequested event,
       Emitter<MoviesBlocState> emit) async {
-    if (state.status == MovieStatus.initial) {
+    if (state.status.isInitial) {
       await emit.forEach(_movieRepository.loadMovieFromDbAsStream(),
           onData: (List<Movie> movies) => state.copyWith(
               status: MovieStatus.success,

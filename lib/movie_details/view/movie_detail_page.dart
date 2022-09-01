@@ -4,14 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_api/model/movie.dart';
 import 'package:movie_buzz/movie_details/bloc/movie_detail_bloc.dart';
 import 'package:movie_buzz/movie_details/widgets/movie_detail_empty.dart';
-import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_repository/movie_repository.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class MovieDetailPage extends StatelessWidget {
   const MovieDetailPage({Key? key, required this.movie}) : super(key: key);
@@ -83,17 +80,19 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                     Navigator.pop(context);
                   });
                 }
-                return Card(
-                  elevation: 4.0,
-                  child: Column(
-                    children: [
-                      state.movieDetail?.poster != null
-                          ? CachedNetworkImage(
-                              imageUrl: state.movieDetail!.poster)
-                          : Container(),
-                      Text('Movie title, ${state.movieDetail?.title}'),
-                      Text('Movie plot, ${state.movieDetail?.plot}'),
-                    ],
+                return SingleChildScrollView(
+                  child: Card(
+                    elevation: 4.0,
+                    child: Column(
+                      children: [
+                        state.movieDetail?.poster != null
+                            ? CachedNetworkImage(
+                                imageUrl: state.movieDetail!.poster)
+                            : Container(),
+                        Text('Movie title, ${state.movieDetail?.title}'),
+                        Text('Movie plot, ${state.movieDetail?.plot}'),
+                      ],
+                    ),
                   ),
                 );
             }

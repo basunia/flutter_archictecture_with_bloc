@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_api/model/movie.dart';
 import 'package:movie_buzz/movie_details/bloc/movie_detail_bloc.dart';
+import 'package:movie_buzz/movie_details/widgets/movie_detail_empty.dart';
+import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
@@ -76,9 +78,16 @@ class _MovieDetailViewState extends State<MovieDetailView> {
               case MovieDetailStatus.initial:
                 return const MovieListLoading();
               case MovieDetailStatus.failure:
-                return const MovieListError();
+                {
+                  return const MovieListError();
+                }
               case MovieDetailStatus.success:
               default:
+                if (state.movieDetail == null) {
+                  return MovieDetailEmpty(refresh: () {
+                    Navigator.pop(context);
+                  });
+                }
                 return Card(
                   elevation: 4.0,
                   child: Column(

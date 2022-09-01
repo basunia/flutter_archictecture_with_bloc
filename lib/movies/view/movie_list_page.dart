@@ -45,8 +45,7 @@ class _MovieListViewState extends State<MovieListView> {
     _scrollController.addListener(_onScroll);
   }
 
-  _fetchMovieList(
-      {MovieFetchType movieFetchType = MovieFetchType.startup}) async {
+  _fetchMovieList({required MovieFetchType movieFetchType}) async {
     if (await isInternetAvailable) {
       context
           .read<MoviesBloc>()
@@ -82,7 +81,11 @@ class _MovieListViewState extends State<MovieListView> {
               case MovieStatus.success:
               default:
                 if (state.movies.isEmpty) {
-                  return const MovieListEmpty();
+                  return Center(
+                    child: MovieListEmpty(refresh: () {
+                      _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+                    }),
+                  );
                 }
                 return ListView.builder(
                     itemCount: state.hasReachedMax

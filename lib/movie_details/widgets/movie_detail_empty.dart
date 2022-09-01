@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MovieListEmpty extends StatelessWidget {
-  const MovieListEmpty({Key? key, required this.refresh}) : super(key: key);
+class MovieDetailEmpty extends StatelessWidget {
+  const MovieDetailEmpty({Key? key, required this.refresh}) : super(key: key);
   final void Function() refresh;
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class MovieListEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'No movies found!',
+            'No movie found!',
             style: textTheme.caption,
           ),
           const SizedBox(
@@ -21,7 +21,7 @@ class MovieListEmpty extends StatelessWidget {
           ElevatedButton(
               onPressed: refresh,
               child: const Text(
-                'Refresh',
+                'Back to Home',
               )),
         ],
       ),

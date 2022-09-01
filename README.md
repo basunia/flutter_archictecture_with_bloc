@@ -1,6 +1,6 @@
 # movie_buzz 
 
-A flutter app that demonstrates clean architecture that uses bloc library.
+A flutter app that demonstrates clean architecture and that uses bloc library.
 
 Topics covered:
 * Bloc library for state management that also enforces to follow clean architecture

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/movie_details/view/movie_detail_page.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
+import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
@@ -51,13 +52,7 @@ class _MovieListViewState extends State<MovieListView> {
           .read<MoviesBloc>()
           .add(MovieListFetched(movieFetchType: movieFetchType));
     } else {
-      showTopSnackBar(
-        context,
-        const CustomSnackBar.error(
-          textStyle: TextStyle(fontSize: 20.0),
-          message: 'Sorry no Internet!. Please check your connnection',
-        ),
-      );
+      showNoInternerMessage(context);
     }
   }
 
@@ -66,7 +61,7 @@ class _MovieListViewState extends State<MovieListView> {
     return Scaffold(
       appBar: AppBar(title: const Text('Movie Buzz')),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0.0),
         child: RefreshIndicator(
           onRefresh: () async {
             _fetchMovieList(movieFetchType: MovieFetchType.refresh);
@@ -88,6 +83,7 @@ class _MovieListViewState extends State<MovieListView> {
                   );
                 }
                 return ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: state.hasReachedMax
                         ? state.movies.length
                         : state.movies.length + 1,
@@ -98,45 +94,13 @@ class _MovieListViewState extends State<MovieListView> {
                           // ? ButtonLoadMore(loadMore: () {
                           //     context.read<MoviesBloc>().add(MovieListFetched());
                           //   })
-                          : GestureDetector(
+                          : InkWell(
                               onTap: () => Navigator.push(
                                   context,
                                   MovieDetailPage.route(
                                       movie: state.movies[i])),
-                              child: Card(
-                                elevation: 2.0,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Center(
-                                          child: Container(
-                                        // decoration: BoxDecoration(
-                                        //   borderRadius: BorderRadius.all(2)
-                                        // ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: CachedNetworkImage(
-                                            imageUrl: state.movies[i].poster,
-                                            placeholder: (context, url) =>
-                                                const CircularProgressIndicator(),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(Icons.error),
-                                          ),
-                                        ),
-                                      )),
-                                    ),
-                                    if (i % 10 == 0)
-                                      const Text('------------------'),
-                                    MovieListItem(
-                                        movie: state.movies[i], index: i + 1),
-                                  ],
-                                ),
-                              ),
+                              child: MovieListItem(
+                                  movie: state.movies[i], index: i),
                             );
                       // return Padding(
                       //   padding: const EdgeInsets.all(4.0),

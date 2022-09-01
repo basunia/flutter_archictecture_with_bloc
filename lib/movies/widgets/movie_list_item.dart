@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_api/model/movie.dart';
 
@@ -9,18 +10,51 @@ class MovieListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Material(
-        child: ListTile(
-      leading: Text(
-        '$index',
-        // style: textTheme.caption,
+    return Card(
+      elevation: 2.0,
+      margin: const EdgeInsets.all(8.0),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8.0))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(0.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.width,
+              child: FittedBox(
+                fit: BoxFit.fill,
+                // height: 300,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: movie.poster,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // if (i % 10 == 0)
+          //   const Text('------------------'),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              '${index + 1}. ${movie.title}',
+              style:
+                  textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
-      title: Text(
-        movie.title,
-        // style: textTheme.bodyMedium,
-      ),
-      trailing: Text(movie.imdbId),
-      dense: true,
-    ));
+    );
   }
 }

@@ -8,6 +8,7 @@ import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
+import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -57,13 +58,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
           .read<MovieDetailBloc>()
           .add(MovieDetailFetched(movieId: widget.movie.imdbId));
     } else {
-      showTopSnackBar(
-        context,
-        const CustomSnackBar.error(
-          textStyle: TextStyle(fontSize: 20.0),
-          message: 'Sorry no Internet!. Please check your connnection',
-        ),
-      );
+      showNoInternerMessage(context);
     }
   }
 

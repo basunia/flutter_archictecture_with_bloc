@@ -13,7 +13,7 @@ part 'movies_bloc_event.dart';
 // part 'movies_bloc_state.dart';
 
 const movieLimit = 10;
-const throttleDuration = Duration(milliseconds: 100);
+const throttleDuration = Duration(milliseconds: 200);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
   return (events, mapper) {
@@ -58,6 +58,9 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
           pageNumber: event.movieFetchType.isRefresh ? 1 : null));
       final page = state.pageNumber;
       debugPrint('Page:=======> $page');
+
+      //TODO: need to remove [its for testing purpose]
+      await Future<void>.delayed(const Duration(milliseconds: 1000));
       await _movieRepository.fetchMovieFromApi(page: page);
     } catch (e) {
       emit(state.copyWith(status: MovieStatus.failure));

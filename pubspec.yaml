@@ -45,6 +45,7 @@ dependencies:
   cached_network_image: ^3.2.1
   path_provider: ^2.0.8
   json_annotation: ^4.6.0
+  skeletons: ^0.0.3
   skeleton_loader: ^2.0.0+4
     
 

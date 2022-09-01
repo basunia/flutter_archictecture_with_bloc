@@ -44,14 +44,19 @@ class MovieListItem extends StatelessWidget {
           ),
           // if (i % 10 == 0)
           //   const Text('------------------'),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(
+          ListTile(
+            // leading: Text(
+            //   '${index + 1}',
+            //   // style: textTheme.caption,
+            // ),
+            title: Text(
               '${index + 1}. ${movie.title}',
               style:
                   textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
               overflow: TextOverflow.ellipsis,
             ),
+            trailing: Text(movie.year, style: textTheme.caption),
+            dense: true,
           ),
         ],
       ),

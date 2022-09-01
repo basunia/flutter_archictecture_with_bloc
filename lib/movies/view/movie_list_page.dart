@@ -15,6 +15,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../bloc/movies_bloc_state.dart';
+import '../widgets/custom_list_loader_view.dart';
 
 class MovieListPage extends StatelessWidget {
   const MovieListPage({Key? key}) : super(key: key);
@@ -72,7 +73,7 @@ class _MovieListViewState extends State<MovieListView> {
               case MovieStatus.failure:
                 return const MovieListError();
               case MovieStatus.initial:
-                return const MovieListLoading();
+                return const CutomListLoaderView();
               case MovieStatus.success:
               default:
                 if (state.movies.isEmpty) {
@@ -135,10 +136,7 @@ class _MovieListViewState extends State<MovieListView> {
   void _onScroll() {
     if (_scrollController.position.atEdge) {
       bool isTop = _scrollController.position.pixels == 0;
-      if (isTop) {
-        print('At the top');
-      } else {
-        print('At the bottom');
+      if (!isTop) {
         _fetchMovieList(movieFetchType: MovieFetchType.pagination);
       }
     }

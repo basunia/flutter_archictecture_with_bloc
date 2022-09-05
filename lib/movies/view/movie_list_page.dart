@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/movie_details/view/movie_detail_page.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
+import 'package:movie_buzz/movies/widgets/home_nav_drawer.dart';
 import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
@@ -61,6 +62,7 @@ class _MovieListViewState extends State<MovieListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Movie Buzz')),
+      drawer: NavigationDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(0.0),
         child: RefreshIndicator(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -20,10 +22,11 @@ class _LocationPageState extends State<LocationPage> {
   late GoogleMapController mapController;
   final Location _location = Location();
   final LatLng _initialcameraposition = const LatLng(45.521563, -122.677433);
+  StreamSubscription? _subscription;
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    _location.onLocationChanged.listen((l) {
+    _subscription = _location.onLocationChanged.listen((l) {
       debugPrint('Listening...');
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(l.latitude ?? _initialcameraposition.latitude,
@@ -55,5 +58,12 @@ class _LocationPageState extends State<LocationPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    mapController.dispose();
+    _subscription?.cancel();
+    super.dispose();
   }
 }

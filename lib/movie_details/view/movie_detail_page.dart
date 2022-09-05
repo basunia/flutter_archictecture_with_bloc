@@ -71,7 +71,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                 return const MovieListLoading();
               case MovieDetailStatus.failure:
                 {
-                  return const MovieListError();
+                  return MovieListError(onRefresh: () {});
                 }
               case MovieDetailStatus.success:
               default:

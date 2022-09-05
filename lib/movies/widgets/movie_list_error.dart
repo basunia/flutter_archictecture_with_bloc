@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class MovieListError extends StatelessWidget {
-  const MovieListError({Key? key}) : super(key: key);
+  const MovieListError({Key? key, required this.onRefresh}) : super(key: key);
+
+  final void Function() onRefresh;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Column(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text('🙈', style: TextStyle(fontSize: 64)),
-        Text(
-          'Something went wrong!',
-          style: theme.textTheme.headline5,
+        const Text('🙈', style: TextStyle(fontSize: 48)),
+        Center(
+          child: Text(
+            'Something went wrong!',
+            style: theme.textTheme.bodyMedium,
+          ),
         ),
+        const SizedBox(
+          height: 8.0,
+        ),
+        ElevatedButton(onPressed: onRefresh, child: const Text('Refresh')),
       ],
     );
   }

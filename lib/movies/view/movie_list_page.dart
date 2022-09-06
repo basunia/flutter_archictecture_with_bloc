@@ -74,6 +74,9 @@ class _MovieListViewState extends State<MovieListView> {
               builder: (context, state) {
             switch (state.status) {
               case MovieStatus.failure:
+                // if (state.movies.isEmpty) {
+                //   showNoInternerMessage(context);
+                // }
                 return MovieListError(
                   onRefresh: () {
                     _fetchMovieList(movieFetchType: MovieFetchType.refresh);

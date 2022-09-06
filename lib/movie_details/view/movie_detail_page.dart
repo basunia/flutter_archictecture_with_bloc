@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_api/model/movie.dart';
@@ -9,6 +10,8 @@ import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_repository/movie_repository.dart';
+
+import '../widgets/movie_detail_error.dart';
 
 class MovieDetailPage extends StatelessWidget {
   const MovieDetailPage({Key? key, required this.movie}) : super(key: key);
@@ -62,7 +65,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Movie Detail')),
+      appBar: AppBar(title: const Text('movie_detail').tr()),
       body: Center(
         child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
           builder: (context, state) {
@@ -71,7 +74,9 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                 return const MovieListLoading();
               case MovieDetailStatus.failure:
                 {
-                  return MovieListError(onRefresh: () {});
+                  return MovieDetailError(onRefresh: () {
+                    Navigator.pop(context);
+                  });
                 }
               case MovieDetailStatus.success:
               default:

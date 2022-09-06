@@ -31,7 +31,12 @@ class _LocalizationSettingsPageState extends State<LocalizationSettingsPage> {
     dropdownValue = (context.locale.toStringWithSeparator() ==
             Localization.localeCodes.localeUK)
         ? Localization.menuItems.localeUK
-        : Localization.menuItems.localeSpain;
+        : Localization.menuItems.localeRomania;
+
+    icon = (context.locale.toStringWithSeparator() ==
+            Localization.localeCodes.localeUK)
+        ? Localization.localeIcons.localeUK
+        : Localization.localeIcons.localeRomania;
   }
 
   @override
@@ -94,14 +99,15 @@ class _LocalizationSettingsPageState extends State<LocalizationSettingsPage> {
                                   Localization.localeSequence.localeUK);
                             });
                           } else if (newValue ==
-                              Localization.menuItems.localeSpain) {
-                            dropdownValue = Localization.menuItems.localeSpain;
-                            icon = Localization.localeIcons.localeSpain;
+                              Localization.menuItems.localeRomania) {
+                            dropdownValue =
+                                Localization.menuItems.localeRomania;
+                            icon = Localization.localeIcons.localeRomania;
                             context
-                                .setLocale(Localization.locales.localeSpain)
+                                .setLocale(Localization.locales.localeRomania)
                                 .then((value) {
                               context.read<L10nCubit>().setLocale(
-                                  Localization.localeSequence.localeSpain);
+                                  Localization.localeSequence.localeRomania);
                             });
                           }
                         },

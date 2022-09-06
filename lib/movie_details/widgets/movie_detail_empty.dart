@@ -14,12 +14,12 @@ class MovieDetailEmpty extends StatelessWidget {
         children: [
           Text(
             'empty_data_single',
-            style: textTheme.caption,
+            style: textTheme.bodyMedium,
           ).tr(),
           const SizedBox(
-            height: 4.0,
+            height: 12.0,
           ),
-          ElevatedButton(
+          OutlinedButton(
               onPressed: refresh,
               child: const Text(
                 'back_to_home',

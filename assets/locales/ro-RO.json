@@ -1,0 +1,15 @@
+{
+    "title" : "Biblioteca de filme",
+    "empty_data": "Nu s-au găsit filme!",
+    "empty_data_single": "Nu a fost găsit niciun film!",
+    "erorr_message": "Ceva n-a mers bine!",
+    "movie_detail": "Detaliu film",
+    "no_internet_msg": "Ne pare rău, fără internet! Vă rugăm să verificați conexiunea la rețea",
+    "refresh": "Reîmprospăta",
+    "back_to_home": "Înapoi acasă",
+    "lanuguage": "Limba",
+    "change_language": "Schimbați limba",
+    "my_location": "Locatia mea",
+    "loading_movies":"Se încarcă filme",
+    "loading_movie_single":"Se încarcă filmul"
+}

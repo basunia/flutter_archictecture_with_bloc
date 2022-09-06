@@ -4,13 +4,11 @@
     "empty_data_single": "No movie found!",
     "erorr_message": "Something went wrong!",
     "movie_detail": "Movie Detail",
-    "no_internet_msg": "Sorry no Internet! Please check your connection",
+    "no_internet_msg": "Sorry no Internet! Please check your network connection",
     "refresh": "Refresh",
     "back_to_home": "Back to home",
     "lanuguage": "Language",
     "change_language": "Change language",
     "my_location": "My location",
-    "loading_movies":"Loading Movies",
-    "app_local_demo" : "Application localization example",
-    "demo_details" : "This is a sample project to change the language with a drop down menu of languages"
+    "loading_movie_single":"Loading Movie"
 }

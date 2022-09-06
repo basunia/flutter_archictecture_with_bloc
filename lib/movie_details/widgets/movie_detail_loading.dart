@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class MovieListLoading extends StatelessWidget {
-  const MovieListLoading({super.key});
+class MovieDetailLoading extends StatelessWidget {
+  const MovieDetailLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class MovieListLoading extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'loading_movies',
+            'loading_movie_single',
             style: theme.textTheme.headline5,
           ).tr(),
           const Padding(

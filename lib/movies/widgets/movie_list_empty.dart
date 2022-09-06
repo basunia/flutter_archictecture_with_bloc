@@ -14,12 +14,12 @@ class MovieListEmpty extends StatelessWidget {
         children: [
           Text(
             'empty_data',
-            style: textTheme.caption,
+            style: textTheme.bodyMedium,
           ).tr(),
           const SizedBox(
-            height: 4.0,
+            height: 12.0,
           ),
-          ElevatedButton(
+          OutlinedButton(
               onPressed: refresh,
               child: const Text(
                 'refresh',

@@ -62,6 +62,7 @@ class MovieAppView extends StatelessWidget {
     );
   }
 
+  /// https://stackoverflow.com/a/58513635/8198725
   void _rebuildAllChildren(BuildContext context) {
     debugPrint('Rebuilding children..');
     void rebuild(Element el) {

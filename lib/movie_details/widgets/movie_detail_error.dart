@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class MovieListError extends StatelessWidget {
-  const MovieListError({Key? key, required this.onRefresh}) : super(key: key);
+class MovieDetailError extends StatelessWidget {
+  const MovieDetailError({Key? key, required this.onRefresh}) : super(key: key);
 
   final void Function() onRefresh;
 
@@ -23,7 +23,8 @@ class MovieListError extends StatelessWidget {
         const SizedBox(
           height: 8.0,
         ),
-        OutlinedButton(onPressed: onRefresh, child: const Text('refresh').tr()),
+        OutlinedButton(
+            onPressed: onRefresh, child: const Text('back_to_home').tr()),
       ],
     );
   }

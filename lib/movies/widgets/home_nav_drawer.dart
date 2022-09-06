@@ -21,7 +21,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     icon = (context.locale.toStringWithSeparator() ==
             Localization.localeCodes.localeUK)
         ? Localization.localeIcons.localeUK
-        : Localization.localeIcons.localeSpain;
+        : Localization.localeIcons.localeRomania;
   }
 
   @override
@@ -40,10 +40,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               children: [
                 Text(
                   'title',
-                  style: textTheme.subtitle1?.copyWith(color: Colors.white),
+                  style: textTheme.titleLarge?.copyWith(color: Colors.white),
                 ).tr(),
                 const SizedBox(
-                  height: 8.0,
+                  height: 12.0,
                 ),
                 Image(
                   image: AssetImage("assets/images/$icon"),

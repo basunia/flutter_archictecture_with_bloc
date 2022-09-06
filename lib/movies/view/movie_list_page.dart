@@ -55,7 +55,7 @@ class _MovieListViewState extends State<MovieListView> {
           .read<MoviesBloc>()
           .add(MovieListFetched(movieFetchType: movieFetchType));
     } else {
-      showNoInternerMessage(context);
+      showNoInternerMessage(context, 'no_internet_msg');
     }
   }
 
@@ -70,68 +70,83 @@ class _MovieListViewState extends State<MovieListView> {
           onRefresh: () async {
             _fetchMovieList(movieFetchType: MovieFetchType.refresh);
           },
-          child: BlocBuilder<MoviesBloc, MoviesBlocState>(
-              buildWhen: (previous, current) {
-            return !current.status.isFailureOnPagination;
-          }, builder: (context, state) {
-            switch (state.status) {
-              case MovieStatus.failure:
-                return MovieListError(
-                  onRefresh: () {
-                    _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-                  },
-                );
-              case MovieStatus.initial:
-                return const CutomListLoaderView();
-              case MovieStatus.success:
-              default:
-                if (state.movies.isEmpty) {
-                  return Center(
-                    child: MovieListEmpty(refresh: () {
+          child: BlocConsumer<MoviesBloc, MoviesBlocState>(
+            listenWhen: (previous, current) {
+              return current.status.isFailureOnPagination;
+            },
+            listener: (context, state) {
+              showNoInternerMessage(context, 'erorr_message');
+            },
+            buildWhen: (previous, current) {
+              return !current.status.isFailureOnPagination;
+            },
+            builder: (context, state) {
+              switch (state.status) {
+                case MovieStatus.failure:
+                  return MovieListError(
+                    onRefresh: () {
                       _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-                    }),
+                    },
                   );
-                }
-                return ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: state.hasReachedMax
-                        ? state.movies.length
-                        : state.movies.length + 1,
-                    controller: _scrollController,
-                    itemBuilder: (context, i) {
-                      return i >= state.movies.length
-                          ? const BottomLoader()
-                          // ? ButtonLoadMore(loadMore: () {
-                          //     context.read<MoviesBloc>().add(MovieListFetched());
-                          //   })
-                          : InkWell(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MovieDetailPage.route(
-                                      movie: state.movies[i])),
-                              child: MovieListItem(
-                                  movie: state.movies[i], index: i),
-                            );
-                      // return Padding(
-                      //   padding: const EdgeInsets.all(4.0),
-                      //   child: Column(
-                      //     mainAxisAlignment: MainAxisAlignment.start,
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       if (i % 10 == 0) const Text('------------'),
-                      //       Text(
-                      //         'id  ${state.movies[i].id} title : ${state.movies[i].title}',
-                      //         style: const TextStyle(fontSize: 18.0),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // );
-                    });
-            }
-          }),
+                case MovieStatus.initial:
+                  return const CutomListLoaderView();
+                case MovieStatus.success:
+                default:
+                  if (state.movies.isEmpty) {
+                    return Center(
+                      child: MovieListEmpty(refresh: () {
+                        _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+                      }),
+                    );
+                  }
+                  return ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: state.hasReachedMax
+                          ? state.movies.length
+                          : state.movies.length + 1,
+                      controller: _scrollController,
+                      itemBuilder: (context, i) {
+                        return i >= state.movies.length
+                            ? const BottomLoader()
+                            // ? ButtonLoadMore(loadMore: () {
+                            //     context.read<MoviesBloc>().add(MovieListFetched());
+                            //   })
+                            : InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MovieDetailPage.route(
+                                        movie: state.movies[i])),
+                                child: MovieListItem(
+                                    movie: state.movies[i], index: i),
+                              );
+                        // return Padding(
+                        //   padding: const EdgeInsets.all(4.0),
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       if (i % 10 == 0) const Text('------------'),
+                        //       Text(
+                        //         'id  ${state.movies[i].id} title : ${state.movies[i].title}',
+                        //         style: const TextStyle(fontSize: 18.0),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // );
+                      });
+              }
+            },
+          ),
+          // },
+          // builder: (context, state) {
+          //   return BlocBuilder<MoviesBloc, MoviesBlocState>(
+          //       buildWhen: (previous, current) {
+          //     return !current.status.isFailureOnPagination;
+          //   },
         ),
       ),
     );
+    // );
   }
 
   @override

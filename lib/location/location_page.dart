@@ -9,7 +9,7 @@ class LocationPage extends StatefulWidget {
 
   static Route<void> route() {
     return MaterialPageRoute(
-      fullscreenDialog: true,
+      fullscreenDialog: false,
       builder: (context) => const LocationPage(),
     );
   }

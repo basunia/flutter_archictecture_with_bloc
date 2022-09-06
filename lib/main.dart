@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_buzz/service_locator.dart';
-import 'package:movie_buzz/utils/locale.dart';
+import 'package:movie_buzz/utils/localization.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -18,9 +18,9 @@ void main() async {
   HydratedBlocOverrides.runZoned(() async {
     runApp(EasyLocalization(
       path: 'assets/locales',
-      supportedLocales: locales,
+      supportedLocales: Localization.locales,
       saveLocale: true,
-      fallbackLocale: locales[0],
+      fallbackLocale: Localization.locales.first,
       child: MovieApp(
         movieRepository: MovieRepository(
             movieApiClent: services.movieApiClient,

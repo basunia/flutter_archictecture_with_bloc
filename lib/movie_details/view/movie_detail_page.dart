@@ -15,7 +15,7 @@ class MovieDetailPage extends StatelessWidget {
 
   static Route<void> route({required Movie movie}) {
     return MaterialPageRoute(
-      fullscreenDialog: true,
+      fullscreenDialog: false,
       builder: (context) => MovieDetailPage(
         movie: movie,
       ),

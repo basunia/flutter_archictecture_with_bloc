@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_api/model/movie.dart';
+import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 
 class MovieListItem extends StatelessWidget {
   const MovieListItem({Key? key, required this.movie, required this.index})
@@ -33,10 +34,9 @@ class MovieListItem extends StatelessWidget {
                   ),
                   child: CachedNetworkImage(
                     imageUrl: movie.poster,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
+                    placeholder: (context, url) => const BottomLoader(),
                     errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                        const Icon(Icons.movie),
                   ),
                 ),
               ),

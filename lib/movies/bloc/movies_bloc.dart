@@ -60,10 +60,13 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
       debugPrint('Page:=======> $page');
 
       //TODO: need to remove [its for testing purpose]
-      await Future<void>.delayed(const Duration(milliseconds: 1000));
+      // await Future<void>.delayed(const Duration(milliseconds: 1000));
       await _movieRepository.fetchMovieFromApi(page: page);
     } catch (e) {
-      emit(state.copyWith(status: MovieStatus.failure));
+      emit(state.copyWith(
+          status: event.movieFetchType.isPagination
+              ? MovieStatus.failureOnPagination
+              : MovieStatus.failure));
     }
   }
 

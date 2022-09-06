@@ -71,12 +71,11 @@ class _MovieListViewState extends State<MovieListView> {
             _fetchMovieList(movieFetchType: MovieFetchType.refresh);
           },
           child: BlocBuilder<MoviesBloc, MoviesBlocState>(
-              builder: (context, state) {
+              buildWhen: (previous, current) {
+            return !current.status.isFailureOnPagination;
+          }, builder: (context, state) {
             switch (state.status) {
               case MovieStatus.failure:
-                // if (state.movies.isEmpty) {
-                //   showNoInternerMessage(context);
-                // }
                 return MovieListError(
                   onRefresh: () {
                     _fetchMovieList(movieFetchType: MovieFetchType.refresh);

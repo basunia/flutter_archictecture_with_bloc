@@ -6,13 +6,14 @@ import 'package:movie_api/model/movie.dart';
 
 part 'movies_bloc_state.g.dart';
 
-enum MovieStatus { initial, loading, success, failure }
+enum MovieStatus { initial, loading, success, failure, failureOnPagination }
 
 extension MovieStatusX on MovieStatus {
   bool get isInitial => this == MovieStatus.initial;
   bool get isLoading => this == MovieStatus.loading;
   bool get isSuccess => this == MovieStatus.success;
   bool get isFailure => this == MovieStatus.failure;
+  bool get isFailureOnPagination => this == MovieStatus.failureOnPagination;
 }
 
 @JsonSerializable()

@@ -63,7 +63,7 @@ class _MovieListViewState extends State<MovieListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('title').tr()),
-      drawer: NavigationDrawer(),
+      drawer: const NavigationDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(0.0),
         child: RefreshIndicator(

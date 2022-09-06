@@ -46,7 +46,7 @@ class MovieAppView extends StatelessWidget {
           _rebuildAllChildren(context);
         }
         return MaterialApp(
-          title: 'Movie Buzz',
+          title: 'Movie Library',
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,

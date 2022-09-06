@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MovieListError extends StatelessWidget {
@@ -15,14 +16,14 @@ class MovieListError extends StatelessWidget {
         const Text('🙈', style: TextStyle(fontSize: 48)),
         Center(
           child: Text(
-            'Something went wrong!',
+            'erorr_message',
             style: theme.textTheme.bodyMedium,
-          ),
+          ).tr(),
         ),
         const SizedBox(
           height: 8.0,
         ),
-        ElevatedButton(onPressed: onRefresh, child: const Text('Refresh')),
+        ElevatedButton(onPressed: onRefresh, child: const Text('refresh').tr()),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MovieListLoading extends StatelessWidget {
@@ -10,11 +11,11 @@ class MovieListLoading extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('⛅', style: TextStyle(fontSize: 64)),
+          const Text('⛅', style: TextStyle(fontSize: 54)),
           Text(
-            'Loading Movies',
+            'loading_movies',
             style: theme.textTheme.headline5,
-          ),
+          ).tr(),
           const Padding(
             padding: EdgeInsets.all(16),
             child: CircularProgressIndicator(),

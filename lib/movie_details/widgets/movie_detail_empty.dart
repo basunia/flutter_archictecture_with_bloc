@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MovieDetailEmpty extends StatelessWidget {
@@ -12,17 +13,17 @@ class MovieDetailEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'No movie found!',
+            'empty_data_single',
             style: textTheme.caption,
-          ),
+          ).tr(),
           const SizedBox(
             height: 4.0,
           ),
           ElevatedButton(
               onPressed: refresh,
               child: const Text(
-                'Back to Home',
-              )),
+                'back_to_home',
+              ).tr()),
         ],
       ),
     );

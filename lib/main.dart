@@ -20,7 +20,7 @@ void main() async {
       path: 'assets/locales',
       supportedLocales: Localization.locales,
       saveLocale: true,
-      fallbackLocale: Localization.locales.first,
+      fallbackLocale: Localization.locales.localeUK,
       child: MovieApp(
         movieRepository: MovieRepository(
             movieApiClent: services.movieApiClient,

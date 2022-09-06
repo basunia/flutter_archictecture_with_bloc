@@ -45,9 +45,9 @@ class _LocalizationSettingsPageState extends State<LocalizationSettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Change language',
+              'change_language',
               style: textTheme.labelLarge,
-            ),
+            ).tr(),
             const SizedBox(
               height: 12.0,
             ),

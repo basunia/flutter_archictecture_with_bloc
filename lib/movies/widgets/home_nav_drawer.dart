@@ -40,7 +40,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               children: [
                 Text(
                   'title',
-                  style: textTheme.subtitle1,
+                  style: textTheme.subtitle1?.copyWith(color: Colors.white),
                 ).tr(),
                 const SizedBox(
                   height: 8.0,
@@ -52,13 +52,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
             ),
           ),
           ListTile(
-            title: const Text('My location'),
+            title: const Text('my_location').tr(),
             onTap: () {
               Navigator.push(context, LocationPage.route());
             },
           ),
           ListTile(
-            title: const Text('Language'),
+            title: const Text('lanuguage').tr(),
             onTap: () {
               Navigator.push(context, LocalizationSettingsPage.route());
             },

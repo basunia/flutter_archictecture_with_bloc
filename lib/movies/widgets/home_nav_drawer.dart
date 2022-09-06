@@ -1,19 +1,22 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_buzz/location/location_page.dart';
 
+import '../../localization/localization_settings.dart';
+
 class NavigationDrawer extends Drawer {
-  const NavigationDrawer({Key? key}) : super(key: key);
+  NavigationDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
+          DrawerHeader(
+            decoration: const BoxDecoration(
               color: Colors.blue,
             ),
-            child: Text('Movie Buzz'),
+            child: const Text('title').tr(),
           ),
           ListTile(
             title: const Text('My location'),
@@ -24,8 +27,7 @@ class NavigationDrawer extends Drawer {
           ListTile(
             title: const Text('Language'),
             onTap: () {
-              // Update the state of the app.
-              // ...
+              Navigator.push(context, LocalizationSettings.route());
             },
           ),
         ],

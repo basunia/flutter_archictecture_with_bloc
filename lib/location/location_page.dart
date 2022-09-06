@@ -31,7 +31,7 @@ class _LocationPageState extends State<LocationPage> {
       mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           target: LatLng(l.latitude ?? _initialcameraposition.latitude,
               l.longitude ?? _initialcameraposition.longitude),
-          zoom: 11.0)));
+          zoom: 15.0)));
     });
   }
 

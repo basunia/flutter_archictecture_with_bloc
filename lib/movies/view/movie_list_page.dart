@@ -50,13 +50,13 @@ class _MovieListViewState extends State<MovieListView> {
   }
 
   _fetchMovieList({required MovieFetchType movieFetchType}) async {
-    if (await isInternetAvailable) {
-      context
-          .read<MoviesBloc>()
-          .add(MovieListFetched(movieFetchType: movieFetchType));
-    } else {
-      showNoInternerMessage(context, 'no_internet_msg');
-    }
+    // if (await isInternetAvailable) {
+    context
+        .read<MoviesBloc>()
+        .add(MovieListFetched(movieFetchType: movieFetchType));
+    // } else {
+    //   showNoInternerMessage(context, 'no_internet_msg');
+    // }
   }
 
   @override
@@ -72,10 +72,15 @@ class _MovieListViewState extends State<MovieListView> {
           },
           child: BlocConsumer<MoviesBloc, MoviesBlocState>(
             listenWhen: (previous, current) {
-              return current.status.isFailureOnPagination;
+              return current.status.isNoConnection ||
+                  current.status.isFailureOnPagination;
             },
             listener: (context, state) {
-              showNoInternerMessage(context, 'erorr_message');
+              showNoInternerMessage(
+                  context,
+                  state.status.isNoConnection
+                      ? 'no_internet_msg'
+                      : 'erorr_message');
             },
             buildWhen: (previous, current) {
               return !current.status.isFailureOnPagination;
@@ -83,6 +88,7 @@ class _MovieListViewState extends State<MovieListView> {
             builder: (context, state) {
               switch (state.status) {
                 case MovieStatus.failure:
+                case MovieStatus.noConnection:
                   return MovieListError(
                     onRefresh: () {
                       _fetchMovieList(movieFetchType: MovieFetchType.refresh);

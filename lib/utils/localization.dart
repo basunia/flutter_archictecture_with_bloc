@@ -10,5 +10,7 @@ class Localization {
   static final menuItems = ['English - UK', 'Romanian - Romania'];
   static final localeIcons = ['uk.png', 'romania.png'];
   static final localeCodes = ['en_UK', 'ro_RO'];
+
+  // TODO: needs to use indexes instead of this
   static final localeSequence = [0, 1];
 }

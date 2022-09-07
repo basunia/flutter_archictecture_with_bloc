@@ -54,13 +54,13 @@ class _MovieDetailViewState extends State<MovieDetailView> {
   }
 
   _fetchMovieDetail() async {
-    if (await isInternetAvailable) {
-      context
-          .read<MovieDetailBloc>()
-          .add(MovieDetailFetched(movieId: widget.movie.imdbId));
-    } else {
-      showNoInternerMessage(context, 'no_internet_msg');
-    }
+    // if (await isInternetAvailable) {
+    context
+        .read<MovieDetailBloc>()
+        .add(MovieDetailFetched(movieId: widget.movie.imdbId));
+    // } else {
+    //   showNoInternerMessage(context, 'no_internet_msg');
+    // }
   }
 
   @override

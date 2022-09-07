@@ -7,6 +7,7 @@ import 'package:movie_buzz/service_locator.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
 
+import '../../utils/internet_checker.dart';
 import 'movies_bloc_state.dart';
 
 part 'movies_bloc_event.dart';
@@ -66,7 +67,9 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
       emit(state.copyWith(
           status: event.movieFetchType.isPagination
               ? MovieStatus.failureOnPagination
-              : MovieStatus.failure));
+              : !(await isInternetAvailable)
+                  ? MovieStatus.noConnection
+                  : MovieStatus.failure));
     }
   }
 

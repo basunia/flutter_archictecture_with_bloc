@@ -6,8 +6,8 @@ import 'package:movie_api/model/movie.dart';
 import 'package:movie_buzz/movie_details/bloc/movie_detail_bloc.dart';
 import 'package:movie_buzz/movie_details/widgets/movie_detail_empty.dart';
 import 'package:movie_buzz/movie_details/widgets/movie_detail_loading.dart';
-import 'package:movie_buzz/movie_details/widgets/movie_detail_widget.dart';
-import 'package:movie_buzz/movie_details/widgets/movie_detail_widget_landscape.dart';
+import 'package:movie_buzz/movie_details/view/movie_detail_widget.dart';
+import 'package:movie_buzz/movie_details/view/movie_detail_widget_landscape.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
@@ -69,49 +69,58 @@ class _MovieDetailViewState extends State<MovieDetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('movie_detail').tr()),
-      body: Center(
-        child: BlocConsumer<MovieDetailBloc, MovieDetailState>(
-          listenWhen: ((previous, current) =>
-              current.movieDetailStatus.isNoConnection),
-          listener: (context, state) {
-            showMessage(context, 'no_internet_msg');
-          },
-          // builder: (context, state) {
-          //   return BlocBuilder<MovieDetailBloc, MovieDetailState>(
-          builder: (context, state) {
-            switch (state.movieDetailStatus) {
-              case MovieDetailStatus.initial:
-                return const MovieDetailLoading();
-              case MovieDetailStatus.failure:
-              case MovieDetailStatus.noConnection:
-                {
-                  return MovieDetailError(onRefresh: () {
-                    // Navigator.pop(context);
-                    _fetchMovieDetail();
-                  });
-                }
-              case MovieDetailStatus.success:
-              default:
-                if (state.movieDetail == null) {
-                  return MovieDetailEmpty(refresh: () {
-                    Navigator.pop(context);
-                  });
-                }
-                final orientation = MediaQuery.of(context).orientation;
-                return !orientation.isLandScape
-                    ? MovieDetailWidget(
-                        movieDetail: state.movieDetail,
-                      )
-                    : MovieDetailWidgetLandScape(
-                        movieDetail: state.movieDetail,
-                      );
-            }
-          },
-          //   );
-          // },
+      body: CustomScrollView(slivers: [
+        SliverAppBar(
+          pinned: false,
+          title: const Text('movie_detail').tr(),
+          snap: true,
+          floating: true,
         ),
-      ),
+        SliverToBoxAdapter(
+          child: Center(
+            child: BlocConsumer<MovieDetailBloc, MovieDetailState>(
+              listenWhen: ((previous, current) =>
+                  current.movieDetailStatus.isNoConnection),
+              listener: (context, state) {
+                showMessage(context, 'no_internet_msg');
+              },
+              // builder: (context, state) {
+              //   return BlocBuilder<MovieDetailBloc, MovieDetailState>(
+              builder: (context, state) {
+                switch (state.movieDetailStatus) {
+                  case MovieDetailStatus.initial:
+                    return const MovieDetailLoading();
+                  case MovieDetailStatus.failure:
+                  case MovieDetailStatus.noConnection:
+                    {
+                      return MovieDetailError(onRefresh: () {
+                        // Navigator.pop(context);
+                        _fetchMovieDetail();
+                      });
+                    }
+                  case MovieDetailStatus.success:
+                  default:
+                    if (state.movieDetail == null) {
+                      return MovieDetailEmpty(refresh: () {
+                        Navigator.pop(context);
+                      });
+                    }
+                    final orientation = MediaQuery.of(context).orientation;
+                    return !orientation.isLandScape
+                        ? MovieDetailWidget(
+                            movieDetail: state.movieDetail,
+                          )
+                        : MovieDetailWidgetLandScape(
+                            movieDetail: state.movieDetail,
+                          );
+                }
+              },
+              //   );
+              // },
+            ),
+          ),
+        ),
+      ]),
     );
   }
 }

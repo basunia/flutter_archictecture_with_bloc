@@ -9,7 +9,7 @@ import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
-import 'package:movie_buzz/movies/widgets/movie_list_item.dart';
+import 'package:movie_buzz/movies/view/movie_list_item.dart';
 import 'package:movie_repository/movie_repository.dart';
 
 import '../bloc/movies_bloc_state.dart';
@@ -58,80 +58,90 @@ class _MovieListViewState extends State<MovieListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('title').tr()),
+      // appBar: AppBar(title: const Text('title').tr()),
       drawer: const NavigationDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-          },
-          child: BlocConsumer<MoviesBloc, MoviesBlocState>(
-            listenWhen: (previous, current) {
-              return current.status.isNoConnection ||
-                  current.status.isFailureOnPagination;
-            },
-            listener: (context, state) {
-              showMessage(
-                  context,
-                  state.status.isNoConnection
-                      ? 'no_internet_msg'
-                      : 'erorr_message');
-            },
-            buildWhen: (previous, current) {
-              return !current.status.isFailureOnPagination;
-            },
-            builder: (context, state) {
-              switch (state.status) {
-                case MovieStatus.failure:
-                case MovieStatus.noConnection:
-                  return MovieListError(
-                    onRefresh: () {
-                      _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-                    },
-                  );
-                case MovieStatus.initial:
-                  return const CutomListLoaderView();
-                case MovieStatus.success:
-                default:
-                  if (state.movies.isEmpty) {
-                    return Center(
-                      child: MovieListEmpty(refresh: () {
-                        _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-                      }),
-                    );
-                  }
-                  final orientation = MediaQuery.of(context).orientation;
-                  return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: orientation.isLandScape ? 4 : 2),
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: state.hasReachedMax
-                          ? state.movies.length
-                          : state.movies.length + 1,
-                      controller: _scrollController,
-                      itemBuilder: (context, i) {
-                        return i >= state.movies.length
-                            ? const BottomLoader()
-                            : InkWell(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MovieDetailPage.route(
-                                        movie: state.movies[i])),
-                                child: MovieListItem(
-                                    movie: state.movies[i], index: i),
-                              );
-                      });
-              }
-            },
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+        },
+        child: CustomScrollView(controller: _scrollController, slivers: [
+          SliverAppBar(
+            pinned: false,
+            title: const Text('title').tr(),
+            snap: true,
+            floating: true,
           ),
-          // },
-          // builder: (context, state) {
-          //   return BlocBuilder<MoviesBloc, MoviesBlocState>(
-          //       buildWhen: (previous, current) {
-          //     return !current.status.isFailureOnPagination;
-          //   },
-        ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: BlocConsumer<MoviesBloc, MoviesBlocState>(
+                listenWhen: (previous, current) {
+                  return current.status.isNoConnection ||
+                      current.status.isFailureOnPagination;
+                },
+                listener: (context, state) {
+                  showMessage(
+                      context,
+                      state.status.isNoConnection
+                          ? 'no_internet_msg'
+                          : 'erorr_message');
+                },
+                buildWhen: (previous, current) {
+                  return !current.status.isFailureOnPagination;
+                },
+                builder: (context, state) {
+                  switch (state.status) {
+                    case MovieStatus.failure:
+                    case MovieStatus.noConnection:
+                      return MovieListError(
+                        onRefresh: () {
+                          _fetchMovieList(
+                              movieFetchType: MovieFetchType.refresh);
+                        },
+                      );
+                    case MovieStatus.initial:
+                      return const CutomListLoaderView();
+                    case MovieStatus.success:
+                    default:
+                      if (state.movies.isEmpty) {
+                        return Center(
+                          child: MovieListEmpty(refresh: () {
+                            _fetchMovieList(
+                                movieFetchType: MovieFetchType.refresh);
+                          }),
+                        );
+                      }
+                      final orientation = MediaQuery.of(context).orientation;
+                      return GridView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      orientation.isLandScape ? 4 : 2),
+                          physics: const ScrollPhysics(),
+                          itemCount: state.hasReachedMax
+                              ? state.movies.length
+                              : state.movies.length + 1,
+                          // controller: _scrollController,
+                          itemBuilder: (context, i) {
+                            return i >= state.movies.length
+                                ? const BottomLoader()
+                                : InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MovieDetailPage.route(
+                                            movie: state.movies[i])),
+                                    child: MovieListItem(
+                                        movie: state.movies[i], index: i),
+                                  );
+                          });
+                  }
+                },
+              ),
+            ),
+          ),
+        ]),
       ),
     );
     // );

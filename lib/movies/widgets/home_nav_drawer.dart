@@ -51,6 +51,20 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               ],
             ),
           ),
+          SwitchListTile(
+            activeColor: Theme.of(context).colorScheme.secondary,
+            title: const Text('Dark Mode'),
+            value: false,
+            onChanged: (bool value) {
+              setState(() {
+                // ThemeProvider.of(context).setIsLightTheme(!value);
+              });
+            },
+            secondary: Icon(
+              Icons.lightbulb,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
           ListTile(
             title: const Text('my_location').tr(),
             onTap: () {

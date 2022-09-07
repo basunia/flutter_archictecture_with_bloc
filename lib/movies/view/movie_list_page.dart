@@ -72,73 +72,67 @@ class _MovieListViewState extends State<MovieListView> {
             floating: true,
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: BlocConsumer<MoviesBloc, MoviesBlocState>(
-                listenWhen: (previous, current) {
-                  return current.status.isNoConnection ||
-                      current.status.isFailureOnPagination;
-                },
-                listener: (context, state) {
-                  showMessage(
-                      context,
-                      state.status.isNoConnection
-                          ? 'no_internet_msg'
-                          : 'erorr_message');
-                },
-                buildWhen: (previous, current) {
-                  return !current.status.isFailureOnPagination;
-                },
-                builder: (context, state) {
-                  switch (state.status) {
-                    case MovieStatus.failure:
-                    case MovieStatus.noConnection:
-                      return MovieListError(
-                        onRefresh: () {
+            child: BlocConsumer<MoviesBloc, MoviesBlocState>(
+              listenWhen: (previous, current) {
+                return current.status.isNoConnection ||
+                    current.status.isFailureOnPagination;
+              },
+              listener: (context, state) {
+                showMessage(
+                    context,
+                    state.status.isNoConnection
+                        ? 'no_internet_msg'
+                        : 'erorr_message');
+              },
+              buildWhen: (previous, current) {
+                return !current.status.isFailureOnPagination;
+              },
+              builder: (context, state) {
+                switch (state.status) {
+                  case MovieStatus.failure:
+                  case MovieStatus.noConnection:
+                    return MovieListError(
+                      onRefresh: () {
+                        _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+                      },
+                    );
+                  case MovieStatus.initial:
+                    return const CutomListLoaderView();
+                  case MovieStatus.success:
+                  default:
+                    if (state.movies.isEmpty) {
+                      return Center(
+                        child: MovieListEmpty(refresh: () {
                           _fetchMovieList(
                               movieFetchType: MovieFetchType.refresh);
-                        },
+                        }),
                       );
-                    case MovieStatus.initial:
-                      return const CutomListLoaderView();
-                    case MovieStatus.success:
-                    default:
-                      if (state.movies.isEmpty) {
-                        return Center(
-                          child: MovieListEmpty(refresh: () {
-                            _fetchMovieList(
-                                movieFetchType: MovieFetchType.refresh);
-                          }),
-                        );
-                      }
-                      final orientation = MediaQuery.of(context).orientation;
-                      return GridView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount:
-                                      orientation.isLandScape ? 4 : 2),
-                          physics: const ScrollPhysics(),
-                          itemCount: state.hasReachedMax
-                              ? state.movies.length
-                              : state.movies.length + 1,
-                          // controller: _scrollController,
-                          itemBuilder: (context, i) {
-                            return i >= state.movies.length
-                                ? const BottomLoader()
-                                : InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MovieDetailPage.route(
-                                            movie: state.movies[i])),
-                                    child: MovieListItem(
-                                        movie: state.movies[i], index: i),
-                                  );
-                          });
-                  }
-                },
-              ),
+                    }
+                    final orientation = MediaQuery.of(context).orientation;
+                    return GridView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: orientation.isLandScape ? 4 : 2),
+                        physics: const ScrollPhysics(),
+                        itemCount: state.hasReachedMax
+                            ? state.movies.length
+                            : state.movies.length + 1,
+                        // controller: _scrollController,
+                        itemBuilder: (context, i) {
+                          return i >= state.movies.length
+                              ? const BottomLoader()
+                              : InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MovieDetailPage.route(
+                                          movie: state.movies[i])),
+                                  child: MovieListItem(
+                                      movie: state.movies[i], index: i),
+                                );
+                        });
+                }
+              },
             ),
           ),
         ]),

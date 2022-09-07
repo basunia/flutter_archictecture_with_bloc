@@ -12,20 +12,18 @@ class MovieDetailLoading extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       // mainAxisSize: MainAxisSize.min,
       children: [
-        // SizedBox(
-        //   height: MediaQuery.of(context).size.height / 2,
-        // ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+        ),
         Center(
           child: Text(
             'loading_movie_single',
             style: theme.textTheme.headline5,
           ).tr(),
         ),
-        Center(
-          child: const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(),
-          ),
+        const Padding(
+          padding: EdgeInsets.all(16),
+          child: CircularProgressIndicator(),
         ),
       ],
     );

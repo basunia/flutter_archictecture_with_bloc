@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_buzz/location/cubit/l10n_cubit.dart';
 import 'package:movie_buzz/utils/localization.dart';
+
+import '../settings/cubit/settings_cubit.dart';
 
 class LocalizationSettingsPage extends StatefulWidget {
   const LocalizationSettingsPage({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class LocalizationSettingsPage extends StatefulWidget {
   static Route<void> route() {
     return MaterialPageRoute(builder: (context) {
       return BlocProvider.value(
-        value: context.read<L10nCubit>(),
+        value: context.read<SettingsCubit>(),
         child: const LocalizationSettingsPage(),
       );
     });
@@ -95,7 +96,7 @@ class _LocalizationSettingsPageState extends State<LocalizationSettingsPage> {
                             context
                                 .setLocale(Localization.locales.localeUK)
                                 .then((value) {
-                              context.read<L10nCubit>().setLocale(
+                              context.read<SettingsCubit>().setLocale(
                                   Localization.localeSequence.localeUK);
                             });
                           } else if (newValue ==
@@ -106,7 +107,7 @@ class _LocalizationSettingsPageState extends State<LocalizationSettingsPage> {
                             context
                                 .setLocale(Localization.locales.localeRomania)
                                 .then((value) {
-                              context.read<L10nCubit>().setLocale(
+                              context.read<SettingsCubit>().setLocale(
                                   Localization.localeSequence.localeRomania);
                             });
                           }

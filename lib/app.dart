@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_buzz/location/cubit/l10n_cubit.dart';
 import 'package:movie_buzz/movies/view/movie_list_page.dart';
+import 'package:movie_buzz/settings/cubit/settings_cubit.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import 'location/cubit/l10n_state.dart';
+import 'settings/cubit/settings_state.dart';
 
 class MovieApp extends StatelessWidget {
   const MovieApp({Key? key, required MovieRepository movieRepository})
@@ -19,7 +19,7 @@ class MovieApp extends StatelessWidget {
     return RepositoryProvider.value(
       value: _movieRepository,
       child: BlocProvider(
-        create: (context) => L10nCubit(),
+        create: (context) => SettingsCubit(),
         child: MovieAppView(),
       ),
     );
@@ -32,7 +32,7 @@ class MovieAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<L10nCubit, L10nState>(
+    return BlocBuilder<SettingsCubit, SettingsState>(
       buildWhen: ((previous, current) {
         if (previous != current) {
           needRebuild = true;

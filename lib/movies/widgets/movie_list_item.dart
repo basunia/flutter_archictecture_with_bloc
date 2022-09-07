@@ -37,7 +37,7 @@ class MovieListItem extends StatelessWidget {
             ),
           )),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(4.0, 8, 4, 8),
             child: Text(
               '${index + 1}. ${movie.title}',
               style:

@@ -1,20 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/movie_details/view/movie_detail_page.dart';
 import 'package:movie_buzz/movies/bloc/movies_bloc.dart';
 import 'package:movie_buzz/movies/widgets/home_nav_drawer.dart';
+import 'package:movie_buzz/utils/responsive_util.dart';
 import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_buzz/movies/widgets/bottom_loader.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_item.dart';
-import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
-import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_repository/movie_repository.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../bloc/movies_bloc_state.dart';
 import '../widgets/custom_list_loader_view.dart';
@@ -105,10 +101,10 @@ class _MovieListViewState extends State<MovieListView> {
                       }),
                     );
                   }
+                  final orientation = MediaQuery.of(context).orientation;
                   return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: orientation.isLandScape ? 4 : 2),
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: state.hasReachedMax
                           ? state.movies.length
@@ -117,9 +113,6 @@ class _MovieListViewState extends State<MovieListView> {
                       itemBuilder: (context, i) {
                         return i >= state.movies.length
                             ? const BottomLoader()
-                            // ? ButtonLoadMore(loadMore: () {
-                            //     context.read<MoviesBloc>().add(MovieListFetched());
-                            //   })
                             : InkWell(
                                 onTap: () => Navigator.push(
                                     context,
@@ -128,20 +121,6 @@ class _MovieListViewState extends State<MovieListView> {
                                 child: MovieListItem(
                                     movie: state.movies[i], index: i),
                               );
-                        // return Padding(
-                        //   padding: const EdgeInsets.all(8.0),
-                        //   child: Column(
-                        //     mainAxisAlignment: MainAxisAlignment.start,
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       if (i % 10 == 0) const Text('------------'),
-                        //       Text(
-                        //         'id  ${state.movies[i].id} title : ${state.movies[i].title}',
-                        //         style: const TextStyle(fontSize: 18.0),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // );
                       });
               }
             },

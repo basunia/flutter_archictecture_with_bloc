@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/location/location_page.dart';
+import 'package:movie_buzz/settings/cubit/settings_cubit.dart';
+import 'package:movie_buzz/settings/cubit/settings_state.dart';
 
 import '../../localization/localization_settings.dart';
 import '../../utils/localization.dart';
@@ -26,13 +29,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     return Drawer(
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
+            decoration: BoxDecoration(
+              color: theme.primaryColor,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,19 +55,28 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               ],
             ),
           ),
-          SwitchListTile(
-            activeColor: Theme.of(context).colorScheme.secondary,
-            title: const Text('Dark Mode'),
-            value: false,
-            onChanged: (bool value) {
-              setState(() {
-                // ThemeProvider.of(context).setIsLightTheme(!value);
-              });
+          BlocSelector<SettingsCubit, SettingsState, int>(
+            selector: (state) {
+              return state.themeId;
             },
-            secondary: Icon(
-              Icons.lightbulb,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+            builder: (context, state) {
+              return SwitchListTile(
+                activeColor: Theme.of(context).colorScheme.secondary,
+                title: const Text('Dark Mode'),
+                value: state == 0 ? false : true,
+                onChanged: (bool value) {
+                  setState(() {
+                    context
+                        .read<SettingsCubit>()
+                        .setTheme(value == false ? 0 : 1);
+                  });
+                },
+                secondary: Icon(
+                  Icons.lightbulb,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              );
+            },
           ),
           ListTile(
             title: const Text('my_location').tr(),

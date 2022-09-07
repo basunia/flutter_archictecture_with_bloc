@@ -11,6 +11,10 @@ class SettingsCubit extends HydratedCubit<SettingsState> {
     emit(state.copyWith(localeId: localeId));
   }
 
+  void setTheme(int themeId) {
+    emit(state.copyWith(themeId: themeId));
+  }
+
   @override
   SettingsState? fromJson(Map<String, dynamic> json) =>
       SettingsState.fromJsom(json);

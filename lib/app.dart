@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_buzz/movies/view/movie_list_page.dart';
 import 'package:movie_buzz/settings/cubit/settings_cubit.dart';
+import 'package:movie_buzz/utils/theme_util.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -42,6 +43,7 @@ class MovieAppView extends StatelessWidget {
       builder: (context, state) {
         debugPrint(
             'Locale id ${state.localeId}, ${context.locale.toStringWithSeparator()}');
+        debugPrint('Theme id ${state.themeId},');
         if (needRebuild) {
           _rebuildAllChildren(context);
         }
@@ -51,6 +53,8 @@ class MovieAppView extends StatelessWidget {
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           debugShowCheckedModeBanner: false,
+          theme:
+              state.themeId == 0 ? ColorsLight.themeData : ColorsDark.themeData,
           home: Builder(builder: (context) {
             debugPrint(
                 'Locale id ${state.localeId}, ${context.locale.toStringWithSeparator()}');

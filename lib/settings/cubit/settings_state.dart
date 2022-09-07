@@ -10,8 +10,9 @@ class SettingsState extends Equatable {
   final int localeId;
   final int themeId;
 
-  SettingsState copyWith({int? localeId}) {
-    return SettingsState(localeId: localeId ?? this.localeId);
+  SettingsState copyWith({int? localeId, int? themeId}) {
+    return SettingsState(
+        localeId: localeId ?? this.localeId, themeId: themeId ?? this.themeId);
   }
 
   factory SettingsState.fromJsom(json) => _$SettingsStateFromJson(json);

@@ -45,9 +45,8 @@ abstract class AppColors {
 
 /// **************** LIGHT THEME *********************** ///
 
-class _ColorsLight extends AppColors {
-  @override
-  ThemeData get themeData => ThemeData(
+class ColorsLight {
+  static ThemeData get themeData => ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xff4692CE),
           selectionColor: Color(0xff4692CE),
@@ -76,11 +75,11 @@ class _ColorsLight extends AppColors {
           ),
         ),
         appBarTheme: const AppBarTheme(
-          color: Color(0xff4692CE),
+          color: Color(0xFFD53668),
         ),
         // buttonColor: Color(0xffCBE8FE),
         canvasColor: const Color(0xffECF0F3),
-        primaryColor: const Color(0xff4692CE),
+        primaryColor: const Color(0xFFD53668),
         cardColor: Colors.white,
         highlightColor: const Color(0xffF5F5F5),
         dialogBackgroundColor: Color(0xffFFFFFF),
@@ -145,9 +144,8 @@ class _ColorsLight extends AppColors {
 
 /// **************** DARK THEME *********************** ///
 
-class _ColorsDark extends AppColors {
-  @override
-  ThemeData get themeData => ThemeData(
+class ColorsDark {
+  static ThemeData get themeData => ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xff4692CE),
           selectionColor: Color(0xff4692CE),

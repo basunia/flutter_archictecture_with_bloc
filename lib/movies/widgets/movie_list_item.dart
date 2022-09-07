@@ -11,52 +11,39 @@ class MovieListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return Card(
       elevation: 2.0,
-      margin: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.all(4.0),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8.0))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.width,
+          Expanded(
               child: FittedBox(
-                fit: BoxFit.fill,
-                // height: 300,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: movie.poster,
-                    placeholder: (context, url) => const BottomLoader(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.movie),
-                  ),
-                ),
+            fit: BoxFit.fill,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(8.0),
+                topRight: Radius.circular(8.0),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: movie.poster,
+                placeholder: (context, url) => const BottomLoader(),
+                errorWidget: (context, url, error) => const Icon(Icons.movie),
               ),
             ),
-          ),
-          // if (i % 10 == 0)
-          //   const Text('------------------'),
-          ListTile(
-            // leading: Text(
-            //   '${index + 1}',
-            //   // style: textTheme.caption,
-            // ),
-            title: Text(
+          )),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
               '${index + 1}. ${movie.title}',
               style:
                   textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w400),
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: Text(movie.year, style: textTheme.caption),
-            dense: true,
           ),
         ],
       ),

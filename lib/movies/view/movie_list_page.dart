@@ -105,7 +105,10 @@ class _MovieListViewState extends State<MovieListView> {
                       }),
                     );
                   }
-                  return ListView.builder(
+                  return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2),
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: state.hasReachedMax
                           ? state.movies.length
@@ -126,7 +129,7 @@ class _MovieListViewState extends State<MovieListView> {
                                     movie: state.movies[i], index: i),
                               );
                         // return Padding(
-                        //   padding: const EdgeInsets.all(4.0),
+                        //   padding: const EdgeInsets.all(8.0),
                         //   child: Column(
                         //     mainAxisAlignment: MainAxisAlignment.start,
                         //     crossAxisAlignment: CrossAxisAlignment.start,

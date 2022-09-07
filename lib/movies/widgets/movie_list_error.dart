@@ -13,8 +13,8 @@ class MovieListError extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
+        const SizedBox(
+          height: 12.0,
         ),
         const Text('🙈', style: TextStyle(fontSize: 48)),
         Center(

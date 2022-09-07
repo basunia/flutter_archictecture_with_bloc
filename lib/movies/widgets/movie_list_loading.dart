@@ -9,10 +9,11 @@ class MovieListLoading extends StatelessWidget {
     final theme = Theme.of(context);
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
+          const SizedBox(
+            height: 12.0,
           ),
           Text(
             'loading_movies',

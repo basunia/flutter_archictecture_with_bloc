@@ -7,9 +7,11 @@ import 'package:movie_buzz/movie_details/bloc/movie_detail_bloc.dart';
 import 'package:movie_buzz/movie_details/widgets/movie_detail_empty.dart';
 import 'package:movie_buzz/movie_details/widgets/movie_detail_loading.dart';
 import 'package:movie_buzz/movie_details/widgets/movie_detail_widget.dart';
+import 'package:movie_buzz/movie_details/widgets/movie_detail_widget_landscape.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_loading.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
+import 'package:movie_buzz/utils/responsive_util.dart';
 import 'package:movie_buzz/utils/toast.dart';
 import 'package:movie_repository/movie_repository.dart';
 
@@ -96,9 +98,14 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                     Navigator.pop(context);
                   });
                 }
-                return MovieDetailWidget(
-                  movieDetail: state.movieDetail,
-                );
+                final orientation = MediaQuery.of(context).orientation;
+                return !orientation.isLandScape
+                    ? MovieDetailWidget(
+                        movieDetail: state.movieDetail,
+                      )
+                    : MovieDetailWidgetLandScape(
+                        movieDetail: state.movieDetail,
+                      );
             }
           },
           //   );

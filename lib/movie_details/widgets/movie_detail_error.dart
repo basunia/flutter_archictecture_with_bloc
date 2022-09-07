@@ -13,6 +13,9 @@ class MovieDetailError extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+        ),
         const Text('🙈', style: TextStyle(fontSize: 48)),
         Center(
           child: Text(

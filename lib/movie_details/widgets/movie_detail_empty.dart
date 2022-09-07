@@ -12,6 +12,9 @@ class MovieDetailEmpty extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 2,
+          ),
           Text(
             'empty_data_single',
             style: textTheme.bodyMedium,

@@ -11,6 +11,9 @@ class MovieListLoading extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 2,
+          ),
           Text(
             'loading_movies',
             style: theme.textTheme.headline5,

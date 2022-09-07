@@ -61,6 +61,7 @@ class _MovieListViewState extends State<MovieListView> {
       // appBar: AppBar(title: const Text('title').tr()),
       drawer: const NavigationDrawer(),
       body: RefreshIndicator(
+        color: Theme.of(context).primaryColor,
         onRefresh: () async {
           _fetchMovieList(movieFetchType: MovieFetchType.refresh);
         },

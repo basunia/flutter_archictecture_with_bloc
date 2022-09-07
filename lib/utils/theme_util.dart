@@ -24,19 +24,7 @@ abstract class AppColors {
 
   Color get generalText;
 
-  Color get narratorText;
-
-  Color get lastReadText;
-
-  Color get screenShotPromotion;
-
   Color get buttonHighlight;
-
-  Color get isnadBackgroundColor;
-
-  Color get isnadCardColor;
-
-  Color get isnadCardTextColor;
 
   Color get toastBackgroundColor;
 
@@ -109,31 +97,10 @@ class ColorsLight {
   Color get textFieldBorder => Color(0xff6D6E6F);
 
   @override
-  Color get searchTextHighlight => Color(0xffCAE6FC);
-
-  @override
   Color get generalText => Color(0xff363636);
 
   @override
-  Color get narratorText => Colors.grey;
-
-  @override
-  Color get lastReadText => Color(0xff6d6d6d);
-
-  @override
-  Color get screenShotPromotion => Color(0xffECF0F3);
-
-  @override
   Color get buttonHighlight => Color(0xffDAE4ED);
-
-  @override
-  Color get isnadBackgroundColor => Color(0xffFFFFFF);
-
-  @override
-  Color get isnadCardColor => Colors.white;
-
-  @override
-  Color get isnadCardTextColor => Color(0xff424242);
 
   @override
   Color get toastBackgroundColor => Colors.black;
@@ -201,30 +168,10 @@ class ColorsDark {
   Color get textFieldBorder => Color(0xffB6B6B6);
 
   @override
-  Color get searchTextHighlight => Color(0xff4A667C);
-
-  @override
   Color get generalText => Color(0xffCACACA);
 
   @override
-  Color get narratorText => Color(0xff8B8B8B);
-
-  Color get lastReadText => Color(0x6D6D6D);
-
-  @override
-  Color get screenShotPromotion => Colors.black;
-
-  @override
   Color get buttonHighlight => Color(0xffDAE4ED);
-
-  @override
-  Color get isnadBackgroundColor => Colors.black;
-
-  @override
-  Color get isnadCardColor => Color(0xff3D3D3D);
-
-  @override
-  Color get isnadCardTextColor => Color(0xffC2C2C2);
 
   @override
   Color get toastBackgroundColor => Colors.white;

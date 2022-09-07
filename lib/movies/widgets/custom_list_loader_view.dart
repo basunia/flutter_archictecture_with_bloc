@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_buzz/utils/responsive_util.dart';
 import 'package:skeleton_loader/skeleton_loader.dart';
-import 'package:skeletons/skeletons.dart';
 
 class CutomListLoaderView extends StatelessWidget {
   const CutomListLoaderView({Key? key}) : super(key: key);
@@ -33,7 +32,7 @@ class CutomListLoaderView extends StatelessWidget {
       items: 8,
       itemsPerRow: MediaQuery.of(context).orientation.isLandScape ? 4 : 2,
       period: const Duration(seconds: 2),
-      highlightColor: const Color(0xFFE3515B),
+      highlightColor: Theme.of(context).primaryColor,
       direction: SkeletonDirection.ltr,
       childAspectRatio: 1,
     );

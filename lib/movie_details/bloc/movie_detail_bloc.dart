@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movie_api/model/movie_detail.dart';
+import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_repository/movie_repository.dart';
 
 part 'movie_detail_event.dart';
@@ -27,7 +28,10 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
       emit(state.copyWith(movieDetailStatus: MovieDetailStatus.initial));
       await _movieRepository.fetchMovieDetailFromApi(event.movieId);
     } catch (_) {
-      emit(state.copyWith(movieDetailStatus: MovieDetailStatus.failure));
+      emit(state.copyWith(
+          movieDetailStatus: !(await isInternetAvailable)
+              ? MovieDetailStatus.noConnection
+              : MovieDetailStatus.failure));
     }
   }
 

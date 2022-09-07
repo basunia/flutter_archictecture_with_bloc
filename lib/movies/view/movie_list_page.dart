@@ -76,7 +76,7 @@ class _MovieListViewState extends State<MovieListView> {
                   current.status.isFailureOnPagination;
             },
             listener: (context, state) {
-              showNoInternerMessage(
+              showMessage(
                   context,
                   state.status.isNoConnection
                       ? 'no_internet_msg'

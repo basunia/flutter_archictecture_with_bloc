@@ -68,15 +68,24 @@ class _MovieDetailViewState extends State<MovieDetailView> {
     return Scaffold(
       appBar: AppBar(title: const Text('movie_detail').tr()),
       body: Center(
-        child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
+        child: BlocConsumer<MovieDetailBloc, MovieDetailState>(
+          listenWhen: ((previous, current) =>
+              current.movieDetailStatus.isNoConnection),
+          listener: (context, state) {
+            showMessage(context, 'no_internet_msg');
+          },
+          // builder: (context, state) {
+          //   return BlocBuilder<MovieDetailBloc, MovieDetailState>(
           builder: (context, state) {
             switch (state.movieDetailStatus) {
               case MovieDetailStatus.initial:
                 return const MovieDetailLoading();
               case MovieDetailStatus.failure:
+              case MovieDetailStatus.noConnection:
                 {
                   return MovieDetailError(onRefresh: () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    _fetchMovieDetail();
                   });
                 }
               case MovieDetailStatus.success:
@@ -103,6 +112,8 @@ class _MovieDetailViewState extends State<MovieDetailView> {
                 );
             }
           },
+          //   );
+          // },
         ),
       ),
     );

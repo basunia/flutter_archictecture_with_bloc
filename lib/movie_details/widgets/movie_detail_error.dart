@@ -23,8 +23,7 @@ class MovieDetailError extends StatelessWidget {
         const SizedBox(
           height: 8.0,
         ),
-        OutlinedButton(
-            onPressed: onRefresh, child: const Text('back_to_home').tr()),
+        OutlinedButton(onPressed: onRefresh, child: const Text('refresh').tr()),
       ],
     );
   }

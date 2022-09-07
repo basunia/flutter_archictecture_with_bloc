@@ -1,6 +1,10 @@
 part of 'movie_detail_bloc.dart';
 
-enum MovieDetailStatus { initial, loading, success, failure }
+extension MovieDetailStatusX on MovieDetailStatus {
+  bool get isNoConnection => this == MovieDetailStatus.noConnection;
+}
+
+enum MovieDetailStatus { initial, loading, success, failure, noConnection }
 
 class MovieDetailState extends Equatable {
   const MovieDetailState(

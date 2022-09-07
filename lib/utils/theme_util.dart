@@ -75,11 +75,11 @@ class ColorsLight {
           ),
         ),
         appBarTheme: const AppBarTheme(
-          color: Color(0xFFD53668),
+          color: Color(0xFFDA3030),
         ),
         // buttonColor: Color(0xffCBE8FE),
         canvasColor: const Color(0xffECF0F3),
-        primaryColor: const Color(0xFFD53668),
+        primaryColor: const Color(0xFFDA3030),
         cardColor: Colors.white,
         highlightColor: const Color(0xffF5F5F5),
         dialogBackgroundColor: Color(0xffFFFFFF),

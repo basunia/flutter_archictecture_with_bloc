@@ -13,7 +13,7 @@ class MovieDetailLoading extends StatelessWidget {
       // mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(
-          height: 100.0,
+          height: 48.0,
         ),
         Center(
           child: Text(

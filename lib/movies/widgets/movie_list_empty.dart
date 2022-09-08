@@ -16,7 +16,7 @@ class MovieListEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
-            height: 100.0,
+            height: 48.0,
           ),
           Text(
             'empty_data',

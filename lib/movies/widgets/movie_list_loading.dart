@@ -13,7 +13,7 @@ class MovieListLoading extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
-            height: 12.0,
+            height: 48.0,
           ),
           Text(
             'loading_movies',

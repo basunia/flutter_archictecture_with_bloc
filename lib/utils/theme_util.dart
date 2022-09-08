@@ -75,7 +75,7 @@ class ColorsLight {
         dialogBackgroundColor: Color(0xffFFFFFF),
         backgroundColor: const Color(0xff333333),
         primarySwatch: Colors.red,
-        colorScheme: const ColorScheme.light(secondary: Color(0xFFDD6C6C)),
+        colorScheme: const ColorScheme.light(secondary: Color(0xFFD64A4A)),
         pageTransitionsTheme:
             const PageTransitionsTheme(builders: _defaultBuilders),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -144,7 +144,7 @@ class ColorsDark {
           ),
         ),
         // buttonColor: Color(0xff424242),
-        primaryColor: Colors.white,
+        primaryColor: Colors.grey,
         canvasColor: Colors.black,
         backgroundColor: Color(0xffD0D0D0),
         cardColor: Color(0xff2C2C2C),

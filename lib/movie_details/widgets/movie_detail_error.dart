@@ -28,8 +28,10 @@ class MovieDetailError extends StatelessWidget {
         ),
         OutlinedButton(
             onPressed: onRefresh,
-            child: Text('refresh', style: TextStyle(color: theme.primaryColor))
-                .tr()),
+            child: Text(
+              'refresh',
+              style: theme.textTheme.headline3,
+            ).tr()),
       ],
     );
   }

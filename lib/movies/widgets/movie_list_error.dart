@@ -30,7 +30,7 @@ class MovieListError extends StatelessWidget {
             onPressed: onRefresh,
             child: Text(
               'refresh',
-              style: TextStyle(color: theme.primaryColor),
+              style: theme.textTheme.headline3,
             ).tr()),
       ],
     );

@@ -47,11 +47,11 @@ class ColorsLight {
             fontWeight: FontWeight.w700,
           ),
           headline4: TextStyle(
-            color: Color(0xff1B1B1B),
+            color: Color(0xFFDA3030),
             fontSize: 14,
           ),
           headline3: TextStyle(
-            color: Color(0xff4692CE),
+            color: Color(0xFFDA3030),
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),

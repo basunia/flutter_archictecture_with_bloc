@@ -69,13 +69,13 @@ class ColorsLight {
         ),
         // buttonColor: Color(0xffCBE8FE),
         canvasColor: const Color(0xffECF0F3),
-        primaryColor: const Color(0xFFDA3030),
+        primaryColor: Color(0xFFDA3030),
         cardColor: Colors.white,
         highlightColor: const Color(0xffF5F5F5),
         dialogBackgroundColor: Color(0xffFFFFFF),
         backgroundColor: const Color(0xff333333),
         primarySwatch: Colors.red,
-        colorScheme: const ColorScheme.light(secondary: Color(0xff4692CE)),
+        colorScheme: const ColorScheme.light(secondary: Color(0xFFDD6C6C)),
         pageTransitionsTheme:
             const PageTransitionsTheme(builders: _defaultBuilders),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -144,6 +144,7 @@ class ColorsDark {
           ),
         ),
         // buttonColor: Color(0xff424242),
+        primaryColor: Colors.white,
         canvasColor: Colors.black,
         backgroundColor: Color(0xffD0D0D0),
         cardColor: Color(0xff2C2C2C),

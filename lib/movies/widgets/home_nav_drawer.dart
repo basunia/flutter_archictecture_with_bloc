@@ -36,7 +36,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: theme.primaryColor,
+              color: theme.colorScheme.secondary,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

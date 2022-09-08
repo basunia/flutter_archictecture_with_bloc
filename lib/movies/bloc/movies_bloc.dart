@@ -55,9 +55,9 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
         print('Movie count $result');
         if (result != 0) return;
       }
-
       emit(state.copyWith(
-          status: state.movies.isEmpty || event.movieFetchType.isRefresh
+          status: state.movies.isEmpty && !event.movieFetchType.isPagination ||
+                  event.movieFetchType.isRefresh
               ? MovieStatus.initial
               : MovieStatus.loading,
           pageNumber: event.movieFetchType.isRefresh ? 1 : null));
@@ -75,9 +75,10 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
 
       /// If movie list is not empty, then it'will insert into database, and [emit] is controlled by
       /// [_onSubscriptionRequested] functions
+
       if (movies.isEmpty) {
         emit(state.copyWith(
-            movies: movies,
+            movies: !event.movieFetchType.isPagination ? movies : null,
             status: event.movieFetchType.isPagination
                 ? MovieStatus.failureOnPagination
                 : MovieStatus.success,

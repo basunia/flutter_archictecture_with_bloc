@@ -1,10 +1,13 @@
-# movie_buzz 
+# movie_library 
 
-A flutter app that demonstrates clean architecture and that uses bloc library.
+A flutter app that demonstrates clean architecture and that uses bloc library for state management.
 
 Topics covered:
 * Bloc library for state management that also enforces to follow clean architecture
-* Hydrated bloc for state management with persisted state
+* Hydrated bloc/cubit for state management with persisted state
+* Google map
+* Multi language/locale
+* Material theme with dark and light mode
 * Popular dio package for http service
-* Offline mode with Floor library for database management
+* Offline synchronization with Floor library for database management
 

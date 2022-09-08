@@ -42,7 +42,7 @@ class ColorsLight {
         ),
         textTheme: const TextTheme(
           headline1: TextStyle(
-            color: Color(0xff1B1B1B),
+            color: Color(0xFFDA3030),
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -58,6 +58,8 @@ class ColorsLight {
         ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
+            textStyle:
+                MaterialStateProperty.all(TextStyle(color: Color(0xFFDA3030))),
             overlayColor: MaterialStateProperty.all(Color(0xffDAE4ED)),
             backgroundColor: MaterialStateProperty.all(Color(0xffCBE8FE)),
           ),
@@ -72,6 +74,7 @@ class ColorsLight {
         highlightColor: const Color(0xffF5F5F5),
         dialogBackgroundColor: Color(0xffFFFFFF),
         backgroundColor: const Color(0xff333333),
+        primarySwatch: Colors.red,
         colorScheme: const ColorScheme.light(secondary: Color(0xff4692CE)),
         pageTransitionsTheme:
             const PageTransitionsTheme(builders: _defaultBuilders),

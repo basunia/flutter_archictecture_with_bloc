@@ -11,6 +11,7 @@ import 'package:movie_buzz/movies/widgets/movie_list_empty.dart';
 import 'package:movie_buzz/movies/widgets/movie_list_error.dart';
 import 'package:movie_buzz/movies/view/movie_list_item.dart';
 import 'package:movie_repository/movie_repository.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../bloc/movies_bloc_state.dart';
 import '../widgets/custom_list_loader_view.dart';
@@ -38,6 +39,8 @@ class MovieListView extends StatefulWidget {
 
 class _MovieListViewState extends State<MovieListView> {
   final _scrollController = ScrollController();
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   @override
   void initState() {
     super.initState();
@@ -55,16 +58,28 @@ class _MovieListViewState extends State<MovieListView> {
     // }
   }
 
+  // color: Theme.of(context).primaryColor,
+  //       onRefresh: () async {
+  //         _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+  //       },
+
+  void _onRefresh() async {
+    // monitor network fetch
+    _fetchMovieList(movieFetchType: MovieFetchType.refresh);
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: const Text('title').tr()),
       drawer: const NavigationDrawer(),
-      body: RefreshIndicator(
-        color: Theme.of(context).primaryColor,
-        onRefresh: () async {
-          _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-        },
+      body: SmartRefresher(
+        onRefresh: _onRefresh,
+        enablePullUp: false,
+        enablePullDown: true,
+        controller: _refreshController,
         child: CustomScrollView(controller: _scrollController, slivers: [
           SliverAppBar(
             pinned: false,
@@ -93,6 +108,7 @@ class _MovieListViewState extends State<MovieListView> {
                   case MovieStatus.failure:
                   case MovieStatus.noConnection:
                     return MovieListError(
+                      searchedKeyword: state.searchKeyword,
                       onRefresh: () {
                         _fetchMovieList(movieFetchType: MovieFetchType.refresh);
                       },
@@ -103,10 +119,12 @@ class _MovieListViewState extends State<MovieListView> {
                   default:
                     if (state.movies.isEmpty) {
                       return Center(
-                        child: MovieListEmpty(refresh: () {
-                          _fetchMovieList(
-                              movieFetchType: MovieFetchType.refresh);
-                        }),
+                        child: MovieListEmpty(
+                            searchedKeyword: state.searchKeyword,
+                            refresh: () {
+                              _fetchMovieList(
+                                  movieFetchType: MovieFetchType.refresh);
+                            }),
                       );
                     }
                     final orientation = MediaQuery.of(context).orientation;

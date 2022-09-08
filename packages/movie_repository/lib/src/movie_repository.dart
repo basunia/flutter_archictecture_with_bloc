@@ -16,9 +16,11 @@ class MovieRepository {
   Future<void> clearAllData() async =>
       await _localStorageMovieClient.clearAllData();
 
-  Future<void> fetchMovieFromApi({int page = 1}) async {
-    final movies = await _movieApiClent.getMovies(page: page);
-    await _localStorageMovieClient.insertMovies(movies);
+  Future<List<Movie>> fetchMovieFromApi({int page = 1, searchTitle}) async {
+    final movies =
+        await _movieApiClent.getMovies(page: page, searchTitle: searchTitle);
+    if (movies.isNotEmpty) await _localStorageMovieClient.insertMovies(movies);
+    return movies;
   }
 
   Future<void> fetchMovieDetailFromApi(String movieId) async {

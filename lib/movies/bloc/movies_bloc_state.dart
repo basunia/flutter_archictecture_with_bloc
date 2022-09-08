@@ -30,7 +30,8 @@ class MoviesBlocState extends Equatable {
       {this.status = MovieStatus.initial,
       this.movies = const [],
       this.hasReachedMax = false,
-      this.pageNumber = 0});
+      this.pageNumber = 0,
+      this.searchKeyword = 'man'});
 
   @JsonKey(ignore: true)
   final List<Movie> movies;
@@ -39,17 +40,20 @@ class MoviesBlocState extends Equatable {
   @JsonKey(ignore: true)
   final bool hasReachedMax;
   final int pageNumber;
+  final String searchKeyword;
 
   MoviesBlocState copyWith(
       {MovieStatus? status,
       List<Movie>? movies,
       bool? hasReachedMax,
-      int? pageNumber}) {
+      int? pageNumber,
+      String? searchKeyword}) {
     return MoviesBlocState(
         status: status ?? this.status,
         movies: movies ?? this.movies,
         hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-        pageNumber: pageNumber ?? this.pageNumber);
+        pageNumber: pageNumber ?? this.pageNumber,
+        searchKeyword: searchKeyword ?? this.searchKeyword);
   }
 
   factory MoviesBlocState.fromJson(Map<String, dynamic> json) =>

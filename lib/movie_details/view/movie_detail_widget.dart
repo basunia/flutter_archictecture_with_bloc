@@ -17,7 +17,8 @@ class MovieDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            movieDetail?.poster != null
+            movieDetail?.poster != null &&
+                    movieDetail!.poster.contains('https://')
                 ? FittedBox(
                     fit: BoxFit.fill,
                     child: ClipRRect(

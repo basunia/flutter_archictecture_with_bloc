@@ -9,9 +9,11 @@ part of 'movies_bloc_state.dart';
 MoviesBlocState _$MoviesBlocStateFromJson(Map<String, dynamic> json) =>
     MoviesBlocState(
       pageNumber: json['pageNumber'] as int? ?? 0,
+      searchKeyword: json['searchKeyword'] as String? ?? 'man',
     );
 
 Map<String, dynamic> _$MoviesBlocStateToJson(MoviesBlocState instance) =>
     <String, dynamic>{
       'pageNumber': instance.pageNumber,
+      'searchKeyword': instance.searchKeyword,
     };

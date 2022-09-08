@@ -17,7 +17,7 @@ class MovieDetailRequestFailure implements Exception {}
 class MovieDetailNotFoundFailure implements Exception {}
 
 /// we'll search movie list which contain the word 'man' in there titles
-const String searchTitle = 'man';
+// const String searchTitle = 'man';
 const String apiKey = '150aa116';
 
 class MovieApiClent {
@@ -25,13 +25,17 @@ class MovieApiClent {
 
   final Dio _apiClient;
 
-  Future<List<Movie>> getMovies({int page = 1}) async {
+  Future<List<Movie>> getMovies(
+      {int page = 1, String searchTitle = 'man'}) async {
     try {
       final response = await _apiClient.get('',
           queryParameters: {'apikey': apiKey, 's': searchTitle, 'page': page});
 
       if (response.statusCode != 200) {
         throw MovieListRequestFailure();
+      }
+      if (response.data['Search'] == null) {
+        return <Movie>[];
       }
       List<Movie> movies =
           response.data['Search'].map<Movie>((e) => Movie.fromJson(e)).toList();

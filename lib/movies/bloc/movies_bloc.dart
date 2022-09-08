@@ -3,11 +3,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_api/model/movie.dart';
+import 'package:movie_buzz/movie_details/bloc/movie_detail_bloc.dart';
 import 'package:movie_buzz/service_locator.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import '../../utils/internet_checker.dart';
+import '../../utils/random_search_keywoed.dart';
 import 'movies_bloc_state.dart';
 
 part 'movies_bloc_event.dart';
@@ -33,6 +35,8 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
     on<MovieListSubscriptionRequested>(_onSubscriptionRequested);
   }
   final MovieRepository _movieRepository;
+
+  String? movieSearchKeyword;
 
   _fetchMovies(MovieListFetched event, Emitter<MoviesBlocState> emit) async {
     if (state.hasReachedMax) return;
@@ -62,9 +66,26 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
 
       //TODO: need to remove [its for testing purpose]
       // await Future<void>.delayed(const Duration(milliseconds: 1000));
-      await _movieRepository.fetchMovieFromApi(page: page);
+
+      List<Movie> movies = await _movieRepository.fetchMovieFromApi(
+          page: page,
+          searchTitle: event.movieFetchType.isPagination
+              ? state.searchKeyword
+              : movieSearchKeyword = getRandomString(3));
+
+      /// If movie list is not empty, then it'will insert into database, and [emit] is controlled by
+      /// [_onSubscriptionRequested] functions
+      if (movies.isEmpty) {
+        emit(state.copyWith(
+            movies: movies,
+            status: event.movieFetchType.isPagination
+                ? MovieStatus.failureOnPagination
+                : MovieStatus.success,
+            searchKeyword: movieSearchKeyword));
+      }
     } catch (e) {
       emit(state.copyWith(
+          searchKeyword: movieSearchKeyword,
           status: event.movieFetchType.isPagination
               ? MovieStatus.failureOnPagination
               : !(await isInternetAvailable)
@@ -78,9 +99,11 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
     if (state.status.isInitial) {
       await emit.forEach(_movieRepository.loadMovieFromDbAsStream(),
           onData: (List<Movie> movies) => state.copyWith(
-              status: MovieStatus.success,
-              movies: movies,
-              pageNumber: state.pageNumber + 1),
+                status: MovieStatus.success,
+                movies: movies,
+                pageNumber: state.pageNumber + 1,
+                searchKeyword: movieSearchKeyword,
+              ),
           onError: (ob, st) => state.copyWith(status: MovieStatus.failure));
     }
   }

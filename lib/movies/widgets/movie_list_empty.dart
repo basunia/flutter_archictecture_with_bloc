@@ -2,8 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MovieListEmpty extends StatelessWidget {
-  const MovieListEmpty({Key? key, required this.refresh}) : super(key: key);
+  const MovieListEmpty(
+      {Key? key, required this.searchedKeyword, required this.refresh})
+      : super(key: key);
   final void Function() refresh;
+  final String searchedKeyword;
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -13,7 +16,7 @@ class MovieListEmpty extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
-            height: 12.0,
+            height: 100.0,
           ),
           Text(
             'empty_data',
@@ -22,10 +25,27 @@ class MovieListEmpty extends StatelessWidget {
           const SizedBox(
             height: 12.0,
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'searched_keyword',
+                style: textTheme.bodyMedium,
+              ).tr(),
+              Text(
+                ' $searchedKeyword',
+                style: textTheme.headline3,
+              ).tr(),
+            ],
+          ),
+          const SizedBox(
+            height: 12.0,
+          ),
           OutlinedButton(
               onPressed: refresh,
-              child: const Text(
+              child: Text(
                 'refresh',
+                style: textTheme.headline3,
               ).tr()),
         ],
       ),

@@ -10,10 +10,10 @@ class CircularLoader extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: SizedBox(
-          height: 12,
-          width: 12,
+          height: 8,
+          width: 8,
           child: CircularProgressIndicator(
-              color: themeData.primaryColor, strokeWidth: 0.5),
+              color: themeData.primaryColor, strokeWidth: 0.3),
         ),
       ),
     );

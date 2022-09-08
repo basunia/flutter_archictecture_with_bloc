@@ -4,6 +4,7 @@ import 'settings_state.dart';
 
 // part 'l10n_state.dart';
 
+/// Hydrated cubit to persist setting data like theme and locale settings
 class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit() : super(const SettingsState());
 

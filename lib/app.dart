@@ -66,6 +66,7 @@ class MovieAppView extends StatelessWidget {
     );
   }
 
+  /// Needed for updating locale
   /// https://stackoverflow.com/a/58513635/8198725
   /// TODO: we can overcome the issue by using [getx]
   void _rebuildAllChildren(BuildContext context) {

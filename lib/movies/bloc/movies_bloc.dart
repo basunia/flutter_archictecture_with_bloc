@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:movie_api/model/movie.dart';
 import 'package:movie_buzz/movie_details/bloc/movie_detail_bloc.dart';
+import 'package:movie_buzz/movies/view/movie_list_page.dart';
 import 'package:movie_buzz/service_locator.dart';
 import 'package:movie_repository/movie_repository.dart';
 import 'package:stream_transform/stream_transform.dart';
@@ -13,17 +14,19 @@ import '../../utils/random_search_keywoed.dart';
 import 'movies_bloc_state.dart';
 
 part 'movies_bloc_event.dart';
-// part 'movies_bloc_state.dart';
 
 const movieLimit = 10;
 const throttleDuration = Duration(milliseconds: 200);
 
+/// Used for `debounce` the api request that might causes high traffic issue.
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
   return (events, mapper) {
     return droppable<E>().call(events.throttle(duration), mapper);
   };
 }
 
+/// Communicates with [MovieListPage] to exchange data
+/// It uses [HydratedBloc] to save `pageNumber` and `searchKeyword` for next search after app restart.
 class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
   MoviesBloc({required MovieRepository movieRepository})
       : _movieRepository = movieRepository,
@@ -38,10 +41,11 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
 
   String? movieSearchKeyword;
 
+  /// Makes network call, fetch data and insert in db
   _fetchMovies(MovieListFetched event, Emitter<MoviesBlocState> emit) async {
     if (state.hasReachedMax) return;
     try {
-      /// Clear all app data on refresh
+      /// Clear all app data on refresh, so tha user gets fresh data from server
       if (event.movieFetchType.isRefresh) {
         await _movieRepository.clearAllData();
         await clear();
@@ -75,7 +79,6 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
 
       /// If movie list is not empty, then it'will insert into database, and [emit] is controlled by
       /// [_onSubscriptionRequested] functions
-
       if (movies.isEmpty) {
         emit(state.copyWith(
             movies: !event.movieFetchType.isPagination ? movies : null,
@@ -95,6 +98,8 @@ class MoviesBloc extends HydratedBloc<MoviesEvent, MoviesBlocState> {
     }
   }
 
+  /// When data is inserted into database, that data also available to user by subscribing
+  /// into databse
   _onSubscriptionRequested(MovieListSubscriptionRequested event,
       Emitter<MoviesBlocState> emit) async {
     if (state.status.isInitial) {

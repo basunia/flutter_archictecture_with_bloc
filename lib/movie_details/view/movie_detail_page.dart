@@ -13,6 +13,9 @@ import 'package:movie_repository/movie_repository.dart';
 
 import '../widgets/movie_detail_error.dart';
 
+/// Resposible for showing details information for a perticular movie where all movies are listed in grid view
+/// It communicate with [MovieDetailBloc] for exchanging `even` and `state`
+/// Based on different states from [MovieDetailState], screen gets updated.
 class MovieDetailPage extends StatelessWidget {
   const MovieDetailPage({Key? key, required this.movie}) : super(key: key);
 
@@ -53,13 +56,9 @@ class _MovieDetailViewState extends State<MovieDetailView> {
   }
 
   _fetchMovieDetail() async {
-    // if (await isInternetAvailable) {
     context
         .read<MovieDetailBloc>()
         .add(MovieDetailFetched(movieId: widget.movie.imdbId));
-    // } else {
-    //   showNoInternerMessage(context, 'no_internet_msg');
-    // }
   }
 
   @override
@@ -80,8 +79,6 @@ class _MovieDetailViewState extends State<MovieDetailView> {
               listener: (context, state) {
                 showMessage(context, 'no_internet_msg');
               },
-              // builder: (context, state) {
-              //   return BlocBuilder<MovieDetailBloc, MovieDetailState>(
               builder: (context, state) {
                 switch (state.movieDetailStatus) {
                   case MovieDetailStatus.initial:

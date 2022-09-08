@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movie_api/model/movie_detail.dart';
+import 'package:movie_buzz/movie_details/view/movie_detail_page.dart';
 import 'package:movie_buzz/utils/internet_checker.dart';
 import 'package:movie_repository/movie_repository.dart';
 
 part 'movie_detail_event.dart';
 part 'movie_detail_state.dart';
 
+/// /// Communicates with [MovieDetailPage] to exchange data
+/// It uses pure [Bloc] as it doesn't save its `state`.
 class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
   MovieDetailBloc({required MovieRepository movieRepository})
       : _movieRepository = movieRepository,

@@ -16,6 +16,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../bloc/movies_bloc_state.dart';
 import '../widgets/custom_list_loader_view.dart';
 
+/// Landing page where all movies are listed in grid view
+/// It communicate with [MoviesBloc] for exchanging `even` and `state`
+/// Based on different states from [MoviesBlocState], screen gets updated.
 class MovieListPage extends StatelessWidget {
   const MovieListPage({Key? key}) : super(key: key);
 
@@ -41,6 +44,7 @@ class _MovieListViewState extends State<MovieListView> {
   final _scrollController = ScrollController();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -49,19 +53,10 @@ class _MovieListViewState extends State<MovieListView> {
   }
 
   _fetchMovieList({required MovieFetchType movieFetchType}) async {
-    // if (await isInternetAvailable) {
     context
         .read<MoviesBloc>()
         .add(MovieListFetched(movieFetchType: movieFetchType));
-    // } else {
-    //   showNoInternerMessage(context, 'no_internet_msg');
-    // }
   }
-
-  // color: Theme.of(context).primaryColor,
-  //       onRefresh: () async {
-  //         _fetchMovieList(movieFetchType: MovieFetchType.refresh);
-  //       },
 
   void _onRefresh() async {
     // monitor network fetch
@@ -73,7 +68,6 @@ class _MovieListViewState extends State<MovieListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text('title').tr()),
       drawer: const NavigationDrawer(),
       body: SmartRefresher(
         onRefresh: _onRefresh,
@@ -168,6 +162,8 @@ class _MovieListViewState extends State<MovieListView> {
     super.dispose();
   }
 
+  /// When user scrolls down to bottom of the page the [_fetchMovieList] function triggers,
+  /// Needed for pagination
   void _onScroll() {
     if (_scrollController.position.atEdge) {
       bool isTop = _scrollController.position.pixels == 0;
@@ -175,16 +171,5 @@ class _MovieListViewState extends State<MovieListView> {
         _fetchMovieList(movieFetchType: MovieFetchType.pagination);
       }
     }
-
-    // if (_isBottom) {
-    //   context.read<MoviesBloc>().add(MovieListFetched());
-    // }
-  }
-
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
   }
 }

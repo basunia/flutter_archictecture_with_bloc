@@ -3,12 +3,12 @@
 A flutter app that demonstrates clean architecture and that uses bloc library for state management.
 
 Topics covered:
-* Modularizing architechure layer with flutter package
-* Bloc library for state management that also enforces to follow clean architecture
+* Modularizing architechure layer with flutter [package](https://docs.flutter.dev/development/packages-and-plugins/using-packages)
+* [Bloc](https://bloclibrary.dev/#/) library for state management that also enforces to follow [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * Hydrated bloc/cubit for state management with persisted state
-* Google map
-* Multi language/locale support
-* Material theme with dark and light mode
-* Popular dio package for http service
-* Offline synchronization with Floor library for database management
+* [Google map](https://pub.dev/packages/google_maps_flutter)
+* [Multi language/locale support](https://docs.flutter.dev/development/accessibility-and-localization/internationalization)
+* [Material theme](https://docs.flutter.dev/cookbook/design/themes) with dark and light mode
+* Popular [dio](https://github.com/flutterchina/dio) package for http service
+* Offline synchronization with [Floor](https://github.com/pinchbv/floor) library for database management
 

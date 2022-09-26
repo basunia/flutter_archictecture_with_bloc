@@ -1,4 +1,4 @@
-# Flutter architecute with BLoC 
+# Flutter Clean architecute with BLoC 
 
 A flutter app that demonstrates clean architecture and that uses bloc library for state management.
 

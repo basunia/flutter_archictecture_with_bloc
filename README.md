@@ -2,7 +2,7 @@
 
 A flutter app that demonstrates clean architecture and that uses bloc library for state management.
 
-Topics covered:
+###Topics covered:
 * Modularizing architechure layer with flutter [package](https://docs.flutter.dev/development/packages-and-plugins/using-packages)
 * [Bloc](https://bloclibrary.dev/#/) library for state management that also enforces to follow [clean architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 * Hydrated bloc/cubit for state management with persisted state

@@ -36,9 +36,8 @@ The first two layers reside in the main app. For the other two layers, two separ
 
      
      1. main app - Application/Feature layer
-     2. price_tracker_repository - Domain layer
-     3  price_tracker_api -Domain layer (this an interface, this will implement by the concrete api servie like derive_api
-     3. deriv_api  - Data Layer (concret implementation for derive_api
+     2. movie_repository - Domain layer
+     3. movie_api  - Data Layer (concret implementation for derive_api
      
                                                                                                                                                   
                                                                                                                                                   
